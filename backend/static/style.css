@@ -98,7 +98,7 @@ select {
     width: 200px;
     color: #444;
     background-color: #fff;
-    margin-bottom: 20px;
+    margin-bottom: 50px;
   }
   
   select:focus {
@@ -122,7 +122,7 @@ select {
     border-radius: 5px;
     border: none;
     cursor: pointer;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
   }
 
   .generate-playlist-btn:hover {
@@ -138,7 +138,7 @@ select {
 	opacity: 0.7;
 	-webkit-transition: .2s;
 	transition: opacity .2s;
-    margin-bottom: 20px;
+    margin-bottom: 50px;
 }
 
 .slider::-webkit-slider-thumb {
