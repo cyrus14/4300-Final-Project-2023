@@ -160,12 +160,17 @@ select {
 }
 
 .left-label {
-    display: inline-block;
-    margin-right: 300px;
+    order: -1;
   }
   
   .right-label {
-    display: inline-block;
-    margin-left: 300px;
+    order: 1;
   }
+  
+  
+  
+  
+  
+  
+  
   
