@@ -98,7 +98,6 @@ select {
     width: 200px;
     color: #444;
     background-color: #fff;
-    padding: 30px;
   }
   
   select:focus {
