@@ -98,6 +98,7 @@ select {
     width: 200px;
     color: #444;
     background-color: #fff;
+    padding: 30px;
   }
   
   select:focus {
@@ -150,6 +151,7 @@ select {
 .labels {
     display: flex; /* make the parent div a flex container */
     align-items: center; /* align the items along the center vertically */
+    padding: 30px;
   }
 
 .slider::-moz-range-thumb {
