@@ -150,6 +150,10 @@ select {
 	background: #2196f3;
 	cursor: pointer;
 }
+.labels {
+    display: flex; /* make the parent div a flex container */
+    align-items: center; /* align the items along the center vertically */
+  }
 
 .slider::-moz-range-thumb {
 	width: 20px;
@@ -159,13 +163,6 @@ select {
 	cursor: pointer;
 }
 
-.left-label {
-    order: -1;
-  }
-  
-  .right-label {
-    order: 1;
-  }
   
   
   
