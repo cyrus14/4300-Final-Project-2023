@@ -161,11 +161,11 @@ select {
 
 .left-label {
     display: inline-block;
-    margin-right: 10px;
+    margin-right: 300px;
   }
   
   .right-label {
     display: inline-block;
-    margin-left: 10px;
+    margin-left: 300px;
   }
   
