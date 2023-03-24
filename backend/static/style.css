@@ -89,3 +89,24 @@
 .episode-desc{
     font-family: 'Montserrat', sans-serif;
 }
+select {
+    appearance: none;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    padding: 10px;
+    width: 200px;
+    color: #444;
+    background-color: #fff;
+  }
+  
+  select:focus {
+    outline: none;
+    border-color: #5d9cec;
+  }
+  
+  option {
+    font-size: 16px;
+    color: #444;
+    background-color: #fff;
+  }
