@@ -159,3 +159,13 @@ select {
 	cursor: pointer;
 }
 
+.left-label {
+    display: inline-block;
+    margin-right: 10px;
+  }
+  
+  .right-label {
+    display: inline-block;
+    margin-left: 10px;
+  }
+  
