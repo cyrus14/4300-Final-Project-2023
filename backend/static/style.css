@@ -110,3 +110,19 @@ select {
     color: #444;
     background-color: #fff;
   }
+
+  .generate-playlist-btn {
+    display: inline-block;
+    background-color: #5d9cec;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .generate-playlist-btn:hover {
+    background-color: #428bca;
+  }
