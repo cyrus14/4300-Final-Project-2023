@@ -128,7 +128,6 @@ select {
   }
 
   .slider {
-	-webkit-appearance: none;
 	width: 100%;
 	height: 5px;
 	background: #ddd;
@@ -140,7 +139,6 @@ select {
 }
 
 .slider::-webkit-slider-thumb {
-	-webkit-appearance: none;
 	appearance: none;
 	width: 20px;
 	height: 20px;
