@@ -142,7 +142,7 @@ select {
 	transition: opacity .2s;
 }
 
-.slider::-webkit-slider-thumb {
+/**.slider::-webkit-slider-thumb {
 	-webkit-appearance: none;
 	appearance: none;
 	width: 20px;
@@ -150,7 +150,7 @@ select {
 	border-radius: 50%;
 	background: #2196f3;
 	cursor: pointer;
-}
+}**/
 .labels {
     display: flex; /* make the parent div a flex container */
     align-items: center; /* align the items along the center vertically */
