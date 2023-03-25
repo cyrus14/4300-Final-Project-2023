@@ -12,6 +12,9 @@
     flex-direction: column;
     background-image: black;
 }**/
+body{
+    background-color: #000;
+}
 .main{
     position: fixed;
     top: 50%;
