@@ -1,4 +1,4 @@
-.full-body-container{
+/**.full-body-container{
     position: absolute;
     top:0;
     left:0;
@@ -11,7 +11,7 @@
     align-items: center;
     flex-direction: column;
     background-image: black;
-}
+}**/
 .main{
     position: fixed;
     top: 50%;
