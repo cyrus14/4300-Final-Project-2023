@@ -163,7 +163,7 @@ input[type="range"]{
 width:160px;
 height:20px;
 margin:10px 50px;
-background: linear-gradient(to right, #240090 0%, #240090 100%);
+background: linear-gradient(to right, #470aff 0%, #470aff 100%);
 background-size:150px 10px;
 background-position:center;
 background-repeat:no-repeat;
@@ -183,7 +183,7 @@ input[type="range"]::-webkit-slider-thumb{
     -webkit-appearance:none;
     width:20px;
     height:20px;
-    background:#190061;
+    background:#3f16b8;
     position:relative;
     z-index:3;
     box-shadow:0 0 5px 0 rgba(0,0,0,0.3);
