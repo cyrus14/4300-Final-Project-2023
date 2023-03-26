@@ -13,7 +13,7 @@
     background-image: black;
 }**/
 body{
-    background-color: #000;
+    background-color: #4B4F61;
 }
 .main{
     position: fixed;
@@ -37,7 +37,7 @@ body{
 }
 
 #title-t{
-    color: #3500D3;
+    color: #8F3CEE;
 }
 
 .title-colors{
