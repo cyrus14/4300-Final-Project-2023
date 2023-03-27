@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}
+home
+{% endblock %}
+
+{% block body %}
+
+<body> 
+
+    <div class="main"></div>
+
+    <div class="full-body-container">
+        <div class="top-text">
+            <div class="title-colors">
+                <h1 id="title-t">apollo</h1>
+                
+            </div>
+
+            <select id = "city">
+                <option value="New_York_City">New York City, USA</option>
+                <option value="London">London, UK</option>
+                <option value="Mumbai">Mumbai, IND</option>
+                <option value="Toronto">Toronto, CAN</option>
+                <option value="Tokyo">Tokyo, JPN</option>
+            </select>
+
+            <div class="spacer"></div>
+
+              <div class = "labels">
+              <label for="slider" >Sad</label>
+              <input type="range" min="0" max="100" value="50" class="slider">
+              <label for="slider" >Happy</label>
+              </div>
+
+              <div class = "labels">
+              <label for="slider2" >Calm</label>
+              <input type="range" min="0" max="100" value="50" class="slider" id="slider2">
+              <label for="slider2" >Angry</label>
+            </div>
+              
+            <div class = "labels">
+              <label for="slider3" >Peaceful</label>
+              <input type="range" min="0" max="100" value="50" class="slider" id="slider3">
+              <label for="slider3" >Energetic</label>
+            </div>
+              
+        
+            <div class="spacer"></div>
+                
+            <button onclick= 'myFunction()'>Click me</button>
+
+            <ul>
+                {% for item in data %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+
+            <!-- <div class="input-box" onclick="sendFocus()">
+                <img src="{{ url_for('static', filename='images/mag.png') }}" />
+                <input placeholder="Search for a Keeping up with the Kardashians episode" id="filter-text-val" onkeyup="filterText()">
+            </div> -->
+            
+        </div>
+        <div id="answer-box">
+
+        </div>
+    </div>
+
+    <script>
+        console.log(data)
+        function myFunction(){
+            var city = document.getElementById("city").value
+            window.location.href = '/my-link?key=' + city
+        }
+
+        
+        function answerBoxTemplate(title,titleDesc){
+            return `<div class=''>
+                <h3 class='episode-title'>${title}</h3>
+                <p class='episode-desc'>${titleDesc}</p>
+            </div>`
+        }
+
+        function sendFocus(){
+            document.getElementById('filter-text-val').focus()
+        }
+
+        function filterText(){
+            document.getElementById("answer-box").innerHTML = ""
+            console.log(document.getElementById("filter-text-val").value)
+            fetch("/episodes?" + new URLSearchParams({ title: document.getElementById("filter-text-val").value }).toString())
+            .then((response) => response.json())
+            .then((data) => data.forEach(row => {
+                
+                let tempDiv = document.createElement("div")
+                tempDiv.innerHTML = answerBoxTemplate(row.title,row.descr)
+                document.getElementById("answer-box").appendChild(tempDiv)
+            }));
+
+        }
+            
+    </script>
+</body>
+
+{% endblock %}
