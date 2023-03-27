@@ -49,8 +49,8 @@
               
         
 
-
-              <button class="generate-playlist-btn">Generate Playlist</button>
+                
+              <button onclick="myFunction()" class="generate-playlist-btn">Generate Playlist</button>
               
             
             <!-- <div class="input-box" onclick="sendFocus()">
@@ -68,6 +68,15 @@
 
     <script>
 
+        function myFunction() {
+            $.ajax({
+              url: ".../return_songs.py",
+             context: document.body
+            }).done(function() {
+             alert('finished python script');;
+            });
+        }
+        
         function answerBoxTemplate(title,titleDesc){
             return `<div class=''>
                 <h3 class='episode-title'>${title}</h3>
