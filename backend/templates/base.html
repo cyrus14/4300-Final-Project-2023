@@ -66,17 +66,12 @@
     <script>
 
         function myFunction() {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-
-            document.getElementById("result").innerHTML = this.responseText;
-
-            }
-
-            };
-            xhttp.open("GET", ".../return_songs.py", true);
-            xhttp.send();
+            $.ajax({
+              url: ".../return_songs.py",
+             context: document.body
+            }).done(function() {
+             alert('finished python script');;
+            });
         }
         
         function answerBoxTemplate(title,titleDesc){
