@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Kanit&family=Montserrat&family=Open+Sans:wght@500&display=swap" rel="stylesheet"> -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@700&display=swap" rel="stylesheet">
 <script src='js.js'></script>
 
 <body> 
@@ -17,24 +17,26 @@
     <div class="full-body-container">
         <div class="top-text">
             <div class="title-colors">
-                <h1 id="title-t">playlist traveler</h1>
+                <h1 id="title-t">apollo</h1>
                 
             </div>
 
-            <select>
-                <option value="option1">New York City, USA</option>
-                <option value="option2">London, UK</option>
-                <option value="option3">Mumbai, IND</option>
-                <option value="option4">Sydney, AUS</option>
-                <option value="option5">Tokyo, JPN</option>
-              </select>
+            <select id = "city">
+                <option value="New_York_City">New York City, USA</option>
+                <option value="London">London, UK</option>
+                <option value="Mumbai">Mumbai, IND</option>
+                <option value="Toronto">Toronto, CAN</option>
+                <option value="Tokyo">Tokyo, JPN</option>
+            </select>
+
+            <div class="spacer"></div>
 
               <div class = "labels">
               <label for="slider" >Sad</label>
               <input type="range" min="0" max="100" value="50" class="slider">
               <label for="slider" >Happy</label>
               </div>
-              <!-- labels-->
+
               <div class = "labels">
               <label for="slider2" >Calm</label>
               <input type="range" min="0" max="100" value="50" class="slider" id="slider2">
@@ -48,9 +50,17 @@
             </div>
               
         
-
+            <div class="spacer"></div>
                 
-            <a href="/my-link/">Click me</a>
+            <button onclick= 'myFunction()'>Click me</button>
+
+            <ul>
+                {% for item in data %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+
+            
               
             
             <!-- <div class="input-box" onclick="sendFocus()">
@@ -67,7 +77,11 @@
     
 
     <script>
-        
+        console.log(data)
+        function myFunction(){
+            var city = document.getElementById("city").value
+            window.location.href = '/my-link?key=' + city
+        }
 
         
         function answerBoxTemplate(title,titleDesc){
