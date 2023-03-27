@@ -39,12 +39,10 @@ def sql_search(episode):
     return json.dumps([dict(zip(keys, i)) for i in data])
 
 
-@app.route("/<path:path>")
-def home(path):
-    if "/key=" in path and "results" not in path:
+@app.route("/")
+def home():
         return render_template('home.html', title="sample html")
-    else:
-        my_link()
+
 
 
 @app.route('/results')
