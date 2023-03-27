@@ -36,7 +36,7 @@ def sql_search(episode):
 
 @app.route("/")
 def home():
-    return render_template('base.html',title="sample html")
+    return render_template('/templates/base.html',title="sample html")
 
 @app.route('/my-link')
 def my_link():
