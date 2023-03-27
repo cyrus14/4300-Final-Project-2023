@@ -107,6 +107,7 @@ select {
     width: 200px;
     color: #444;
     background-color: #fff;
+    margin-top: 1em;
   }
   
   select:focus {
@@ -159,7 +160,7 @@ select {
 .labels {
     display: flex; /* make the parent div a flex container */
     align-items: center; /* align the items along the center vertically */
-    padding: 30px;
+    padding: 20px;
     color: white;
   }
 
@@ -167,7 +168,7 @@ input[type="range"]{
 -webkit-appearance:none;
 width:160px;
 height:20px;
-margin:10px 50px;
+margin:0px 50px;
 background: linear-gradient(to right, #c2c5f5 0%, #c2c5f5 100%);
 background-size:150px 10px;
 background-position:center;
@@ -181,7 +182,7 @@ input[type="range"]::-webkit-slider-thumb{
     -webkit-appearance:none;
     width:20px;
     height:20px;
-    background:#1b1f2e;
+    background:#294fd9;
     position:relative;
     z-index:3;
     box-shadow:0 0 5px 0 rgba(0,0,0,0.3);
@@ -198,4 +199,7 @@ input[type="range"]::-webkit-slider-thumb{
     background: #ff5b32;
     background: linear-gradient(to right, #f088fc 1%, #AC6CFF 70%);
   }
- 
+
+.spacer {
+    height: 2.5em;
+}
