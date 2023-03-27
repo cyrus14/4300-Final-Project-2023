@@ -55,10 +55,11 @@ sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(CLIENT_
 
 @app.route("/")
 def home():
-    return render_template('home.html', title="sample html")
+        return render_template('home.html', title="sample html")
 
 
-@app.route('/my-link')
+
+@app.route('/results')
 def my_link():
     current_url = request.url
     city = current_url[current_url.index('key=') + 4:]
@@ -123,6 +124,7 @@ def my_link():
 def episodes_search():
     text = request.args.get("title")
     return sql_search(text)
+
 
 '''
 @app.route('/results')
