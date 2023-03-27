@@ -12,13 +12,10 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # These are the DB credentials for your OWN MySQL
 # Don't worry about the deployment credentials, those are fixed
 # You can use a different DB name if you want to
-
-SQL_CREDS = json.load(open('conf.json', 'r+'))
-
-MYSQL_USER = SQL_CREDS['sql_user']
-MYSQL_USER_PASSWORD = SQL_CREDS['sql_user_pwd']
-MYSQL_PORT = SQL_CREDS['sql_port']
-MYSQL_DATABASE = SQL_CREDS['sql_db']
+MYSQL_USER = "root"
+MYSQL_USER_PASSWORD = "myna5791"
+MYSQL_PORT = 3306
+MYSQL_DATABASE = "kardashiandb"
 
 # mysql_engine = MySQLDatabaseHandler(MYSQL_USER,MYSQL_USER_PASSWORD,MYSQL_PORT,MYSQL_DATABASE)
 
@@ -49,8 +46,8 @@ def home():
 def my_link():
     current_url = request.url
     city = current_url[current_url.index('key=') + 4:]
-    city = city.replace('_', ' ')
-    content = find_nonzero_indices(city)
+    cityClean = city.replace('_', ' ')
+    content = find_nonzero_indices(cityClean)
     return render_template('home.html', data=content)
 
 
