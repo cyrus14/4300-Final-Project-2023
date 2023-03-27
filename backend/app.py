@@ -12,7 +12,7 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # These are the DB credentials for your OWN MySQL
 # Don't worry about the deployment credentials, those are fixed
 # You can use a different DB name if you want to
-SQL_CREDS = json.load(open('conf.json', 'r+'))
+SQL_CREDS = json.load(open('./conf.json', 'r+'))
 
 MYSQL_USER = SQL_CREDS['sql_user']
 MYSQL_USER_PASSWORD = SQL_CREDS['sql_user_pwd']
