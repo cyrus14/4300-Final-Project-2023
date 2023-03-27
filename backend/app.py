@@ -48,13 +48,19 @@ def my_link():
     city = current_url[current_url.index('key=') + 4:]
     cityClean = city.replace('_', ' ')
     content = find_nonzero_indices(cityClean)
-    return render_template('home.html', data=content)
+    return render_template('results.html', data=content)
 
 
 @app.route("/episodes")
 def episodes_search():
     text = request.args.get("title")
     return sql_search(text)
+
+'''
+@app.route('/results')
+def results():
+    return render_template('results.html')
+'''
 
 
 app.run(debug=True)

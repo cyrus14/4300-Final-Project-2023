@@ -207,3 +207,41 @@ input[type="range"]::-webkit-slider-thumb{
 ul li {
     color: white;
 }
+
+/* -- to use for the results page --*/
+.header{
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 48px;
+    font-family: 'DM Sans', sans-serif;
+    color: white;
+    margin: 0;
+}
+
+.header .back {
+    color: lightgray;
+    font-family: 'DM Sans', sans-serif;
+    text-decoration: underline;
+    text-decoration-color: #8f3cee;
+}
+
+.full-body-container-2 {
+    padding: 2em;
+}
+
+.card {
+    width: 60vw;
+    height: 20vh;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    margin: 0.5em;
+}
+
+.card-holder {
+    margin: 2em;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
