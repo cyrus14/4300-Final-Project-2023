@@ -50,11 +50,22 @@ home
                 
             <button onclick= 'myFunction()' class="generate-playlist-btn">Generate Playlist</button>
 
-            <ul>
-                {% for item in data %}
-                    <li>{{ item }}</li>
-                {% endfor %}
-            </ul>
+            <table>
+                <thead>
+                  <tr>
+                    <th>Song</th>
+                    <th>Artist</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in data %}
+                    <tr>
+                      <td>{{ item }}</td>
+                      <td>{{ item }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
 
               
             
