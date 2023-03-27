@@ -85,7 +85,6 @@ home
     <script>
         var selectElement = document.getElementById("city");
 
-        console.log("hello" + name)
         for (var i = 0; i < selectElement.options.length; i++) {
             if (selectElement.options[i].value === keyParam) {
             selectElement.selectedIndex = i;
@@ -96,7 +95,7 @@ home
 
         function myFunction(){
             var city = document.getElementById("city").value
-            window.location.href = '/my-link?key=' + city
+            window.location.href = '/results?key=' + city
         }
 
         

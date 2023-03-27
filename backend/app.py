@@ -39,12 +39,15 @@ def sql_search(episode):
     return json.dumps([dict(zip(keys, i)) for i in data])
 
 
-@app.route("/")
-def home():
-    return render_template('home.html', title="sample html")
+@app.route("/<path:path>")
+def home(path):
+    if "/key=" in path and "results" not in path:
+        return render_template('home.html', title="sample html")
+    else:
+        my_link()
 
 
-@app.route('/my-link')
+@app.route('/results')
 def my_link():
     current_url = request.url
     city = current_url[current_url.index('key=') + 4:]
@@ -57,6 +60,7 @@ def my_link():
 def episodes_search():
     text = request.args.get("title")
     return sql_search(text)
+
 
 '''
 @app.route('/results')
