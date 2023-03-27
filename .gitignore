@@ -21,3 +21,5 @@ helpers/*
 *.csv
 
 .ipynb_checkpoints/
+
+backend/conf/
