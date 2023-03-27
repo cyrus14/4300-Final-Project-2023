@@ -60,7 +60,6 @@
                 {% endfor %}
             </ul>
 
-            <p>Hello {{ name }}!</p>
               
             
             <!-- <div class="input-box" onclick="sendFocus()">
@@ -78,10 +77,11 @@
 
     <script>
         var selectElement = document.getElementById("city");
-        var defaultCity = name;
+        let searchParams = new URLSearchParams(window.location.search);
+        let keyParam = searchParams.get('key');
         console.log("hello" + name)
         for (var i = 0; i < selectElement.options.length; i++) {
-            if (selectElement.options[i].value === defaultCity) {
+            if (selectElement.options[i].value === keyParam) {
             selectElement.selectedIndex = i;
             break;
             }
