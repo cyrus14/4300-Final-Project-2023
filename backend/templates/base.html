@@ -21,12 +21,12 @@
                 
             </div>
 
-            <select>
-                <option value="option1">New York City, USA</option>
-                <option value="option2">London, UK</option>
-                <option value="option3">Mumbai, IND</option>
-                <option value="option4">Sydney, AUS</option>
-                <option value="option5">Tokyo, JPN</option>
+            <select id = "city">
+                <option value="New_York_City">New York City, USA</option>
+                <option value="London">London, UK</option>
+                <option value="Mumbai">Mumbai, IND</option>
+                <option value="Sydney">Sydney, AUS</option>
+                <option value="Tokyo">Tokyo, JPN</option>
               </select>
 
               <div class = "labels">
@@ -50,7 +50,7 @@
         
 
                 
-            <a href="/my-link/">Click me</a>
+            <button onclick= 'myFunction()'>Click me</button>
               
             
             <!-- <div class="input-box" onclick="sendFocus()">
@@ -67,7 +67,10 @@
     
 
     <script>
-        
+        function myFunction(){
+            var city = document.getElementById("city").value
+            window.location.href = '/my-link?key=' + city
+        }
 
         
         function answerBoxTemplate(title,titleDesc){
