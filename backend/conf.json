@@ -2,5 +2,8 @@
     "sql_user" : "root",
     "sql_user_pwd": "myna5791",
     "sql_port" : 3306,
-    "sql_db" : "kardashiandb"
+    "sql_db" : "kardashiandb",
+
+    "spotify_client": "be1b7577a54846f5927ec9ce2ce0840f",
+    "spotify_private": "011f8f894eff49b19f20fad64797355f"
 }

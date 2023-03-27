@@ -237,6 +237,13 @@ ul li {
     background-color: #FFFFFF;
     border-radius: 10px;
     margin: 0.5em;
+
+    font-family: 'DM Sans', sans-serif;
+    color: #262B40;
+
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 
 .card-holder {
@@ -244,4 +251,39 @@ ul li {
     display: flex;
     align-items: center;
     flex-direction: column;
+}
+
+.card-inner-flex{
+    display: flex;
+    flex-direction: row;
+}
+
+.card-inner-flex .album {
+    height: 16vh;
+    width: 16vh;
+    margin-left: 1em;
+    margin-right: 1em;
+    border-radius: 5px;
+}
+
+.track a:link {
+    text-decoration: none !important;
+    color: #262B40 !important;
+}
+
+.card-inner-flex .track {
+    margin-left: 1em;
+    padding: 0;
+    margin-bottom: 0;
+    justify-content: center;
+}
+
+.card-inner-flex .card-title {
+    padding: 0;
+    margin: 0;
+}
+
+.card-inner-flex .card-artists{
+    padding: 0;
+    margin: 0;
 }
