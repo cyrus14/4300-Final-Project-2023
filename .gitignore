@@ -20,4 +20,6 @@ helpers/*
 
 *.csv
 
-backend/conf.json
+.ipynb_checkpoints/
+
+conf/
