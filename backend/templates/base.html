@@ -1,21 +1,23 @@
 <!doctype html>
 <title>{% block title %}{% endblock %} - Flaskr</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
 <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kanit&family=Montserrat&family=Open+Sans:wght@500&display=swap" rel="stylesheet"> -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@1,700&display=swap" rel="stylesheet">
+<script src='js.js'></script>
 
 <body> 
 
     <div class="main"></div>
-    <script src='js.js'></script>
+
     <div class="full-body-container">
         <div class="top-text">
             <div class="title-colors">
-                <h1 id="title-t">PLAYLIST-TRAVELER</h1>
+                <h1 id="title-t">playlist traveler</h1>
                 
             </div>
 
@@ -32,7 +34,7 @@
               <input type="range" min="0" max="100" value="50" class="slider">
               <label for="slider" >Happy</label>
               </div>
-              
+              <!-- labels-->
               <div class = "labels">
               <label for="slider2" >Calm</label>
               <input type="range" min="0" max="100" value="50" class="slider" id="slider2">
