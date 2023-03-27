@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@1,700&display=swap" rel="stylesheet">
+
 <body> 
 
     <div class="main"></div>
@@ -47,7 +48,7 @@
         
 
                 
-              <button onclick="myFunction()" class="generate-playlist-btn">Generate Playlist</button>
+            <a href="/my-link/">Click me</a>
               
             
             <!-- <div class="input-box" onclick="sendFocus()">
@@ -64,15 +65,8 @@
     
 
     <script>
+        
 
-        function myFunction() {
-            $.ajax({
-              url: ".../return_songs.py",
-             context: document.body
-            }).done(function() {
-             alert('finished python script');;
-            });
-        }
         
         function answerBoxTemplate(title,titleDesc){
             return `<div class=''>
