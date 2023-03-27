@@ -53,6 +53,12 @@
             <div class="spacer"></div>
                 
             <button onclick= 'myFunction()'>Click me</button>
+
+            <body id="content" >
+            
+            </body>
+
+            
               
             
             <!-- <div class="input-box" onclick="sendFocus()">
@@ -69,6 +75,7 @@
     
 
     <script>
+        console.log(indices)
         function myFunction(){
             var city = document.getElementById("city").value
             window.location.href = '/my-link?key=' + city

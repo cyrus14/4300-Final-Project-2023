@@ -5,9 +5,9 @@ from flask_cors import CORS
 from helpers.MySQLDatabaseHandler import MySQLDatabaseHandler
 from return_songs import find_nonzero_indices
 
-# ROOT_PATH for linking with all your files. 
+# ROOT_PATH for linking with all your files.
 # Feel free to use a config.py or settings.py with a global export variable
-os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..",os.curdir))
+os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 
 # These are the DB credentials for your OWN MySQL
 # Don't worry about the deployment credentials, those are fixed
@@ -25,25 +25,31 @@ MYSQL_DATABASE = "kardashiandb"
 app = Flask(__name__)
 CORS(app)
 
-# Sample search, the LIKE operator in this case is hard-coded, 
-# but if you decide to use SQLAlchemy ORM framework, 
+# Sample search, the LIKE operator in this case is hard-coded,
+# but if you decide to use SQLAlchemy ORM framework,
 # there's a much better and cleaner way to do this
+
+
 def sql_search(episode):
     query_sql = f"""SELECT * FROM episodes WHERE LOWER( title ) LIKE '%%{episode.lower()}%%' limit 10"""
-    keys = ["id","title","descr"]
+    keys = ["id", "title", "descr"]
     data = mysql_engine.query_selector(query_sql)
-    return json.dumps([dict(zip(keys,i)) for i in data])
+    return json.dumps([dict(zip(keys, i)) for i in data])
+
 
 @app.route("/")
 def home():
-    return render_template('base.html',title="sample html")
+    return render_template('base.html', title="sample html")
+
 
 @app.route('/my-link')
 def my_link():
-  current_url = request.url
-  city = current_url[current_url.index('key=') + 4:]
-  city = city.replace('_', ' ')
-  return find_nonzero_indices(city)
+    current_url = request.url
+    city = current_url[current_url.index('key=') + 4:]
+    city = city.replace('_', ' ')
+    indices = find_nonzero_indices(city)
+    return render_template('base.html', indices=indices)
+
 
 @app.route("/episodes")
 def episodes_search():
@@ -51,4 +57,4 @@ def episodes_search():
     return sql_search(text)
 
 
-#app.run(debug=True)
+# app.run(debug=True)
