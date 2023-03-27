@@ -1,3 +1,0 @@
-titles = ['New York City', 'Budapest', 'Ithaca', 'Miami', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 'Philadelphia', 'San Antonio', 'San Diego', 'Dallas', 'San Jose', 'Austin', 'San Francisco', 'Seattle', 'Denver', 'Nashville', 'Washington', 'Oklahoma City', 'Boston',
-          'Las Vegas', 'Memphis', 'Detroit', 'Baltimore', 'New Orleans', 'Paris', 'Tokyo', 'Delhi', 'Shanghai', 'Mexico City', 'Cairo', 'Mumbai', 'Beijing', 'Osaka', 'Buenos Aires', 'Istanbul', 'Guangzhou', 'Bangkok', 'London', 'Hong Kong', 'Madrid', 'Toronto', 'Atlanta', 'Washington']
- 

@@ -12,7 +12,7 @@ with open(filename) as f:
         if l < rows_to_read:
             print(len(row))
             for item in row:
-                print(item)
+                print("---", csv_reader[0]item)
             l += 1
         else:
             # done
