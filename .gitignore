@@ -22,4 +22,5 @@ helpers/*
 
 .ipynb_checkpoints/
 
-backend/conf/
+backend/
+conf/
