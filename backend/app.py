@@ -3,6 +3,7 @@ import os
 from flask import Flask, render_template, request
 from flask_cors import CORS
 from helpers.MySQLDatabaseHandler import MySQLDatabaseHandler
+from return_songs import find_nonzero_indices
 
 # ROOT_PATH for linking with all your files. 
 # Feel free to use a config.py or settings.py with a global export variable
@@ -36,6 +37,13 @@ def sql_search(episode):
 @app.route("/")
 def home():
     return render_template('base.html',title="sample html")
+
+@app.route('/my-link')
+def my_link():
+  current_url = request.url
+  city = current_url[current_url.index('key=') + 4:]
+  city = city.replace('_', ' ')
+  return find_nonzero_indices(city)
 
 @app.route("/episodes")
 def episodes_search():
