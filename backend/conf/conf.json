@@ -1,6 +1,0 @@
-{
-    "sql_user" : "root",
-    "sql_user_pwd": "myna5791",
-    "sql_port" : 3306,
-    "sql_db" : "kardashiandb"
-}
