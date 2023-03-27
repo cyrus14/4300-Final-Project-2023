@@ -54,9 +54,11 @@
                 
             <button onclick= 'myFunction()'>Click me</button>
 
-            <body id="content" >
-            
-            </body>
+            <ul>
+                {% for item in data %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
 
             
               
