@@ -42,7 +42,7 @@ def sql_search(episode):
 
 @app.route("/")
 def home():
-    return render_template('base.html', title="sample html")
+    return render_template('home.html', title="sample html")
 
 
 @app.route('/my-link')
@@ -51,7 +51,7 @@ def my_link():
     city = current_url[current_url.index('key=') + 4:]
     city = city.replace('_', ' ')
     content = find_nonzero_indices(city)
-    return render_template('base.html', data=content)
+    return render_template('home.html', data=content)
 
 
 @app.route("/episodes")
@@ -60,4 +60,4 @@ def episodes_search():
     return sql_search(text)
 
 
-# app.run(debug=True)
+app.run(debug=True)
