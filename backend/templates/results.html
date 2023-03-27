@@ -30,6 +30,10 @@ results
 
 <script>
 function goBack() {
+  
+  let searchParams = new URLSearchParams(window.location.search);
+  let keyParam = searchParams.get('key');
+  window.location.href = '/key='+keyParam
   console.log('Going back!');
   event.preventDefault();
 }

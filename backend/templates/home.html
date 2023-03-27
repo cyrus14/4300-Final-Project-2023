@@ -84,8 +84,7 @@ home
 
     <script>
         var selectElement = document.getElementById("city");
-        let searchParams = new URLSearchParams(window.location.search);
-        let keyParam = searchParams.get('key');
+
         console.log("hello" + name)
         for (var i = 0; i < selectElement.options.length; i++) {
             if (selectElement.options[i].value === keyParam) {
