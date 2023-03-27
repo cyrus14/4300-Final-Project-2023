@@ -47,8 +47,8 @@ def my_link():
     current_url = request.url
     city = current_url[current_url.index('key=') + 4:]
     city = city.replace('_', ' ')
-    indices = find_nonzero_indices(city)
-    return render_template('base.html', indices=indices)
+    content = find_nonzero_indices(city)
+    return render_template('base.html', data=content)
 
 
 @app.route("/episodes")
