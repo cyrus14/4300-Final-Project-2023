@@ -21,15 +21,15 @@
                 
             </div>
 
-            <select>
-                <option value="option1">New York City, USA</option>
-                <option value="option2">London, UK</option>
-                <option value="option3">Mumbai, IND</option>
-                <option value="option4">Sydney, AUS</option>
-                <option value="option5">Tokyo, JPN</option>
-              </select> 
+            <select id = "city">
+                <option value="New_York_City">New York City, USA</option>
+                <option value="London">London, UK</option>
+                <option value="Mumbai">Mumbai, IND</option>
+                <option value="Sydney">Sydney, AUS</option>
+                <option value="Tokyo">Tokyo, JPN</option>
+            </select>
 
-              <div class="spacer"></div>
+            <div class="spacer"></div>
 
               <div class = "labels">
               <label for="slider" >Sad</label>
@@ -52,7 +52,7 @@
         
             <div class="spacer"></div>
                 
-              <button onclick="myFunction()" class="generate-playlist-btn">Generate Playlist</button>
+            <button onclick= 'myFunction()'>Click me</button>
               
             
             <!-- <div class="input-box" onclick="sendFocus()">
@@ -69,15 +69,11 @@
     
 
     <script>
-
-        function myFunction() {
-            $.ajax({
-              url: ".../return_songs.py",
-             context: document.body
-            }).done(function() {
-             alert('finished python script');;
-            });
+        function myFunction(){
+            var city = document.getElementById("city").value
+            window.location.href = '/my-link?key=' + city
         }
+
         
         function answerBoxTemplate(title,titleDesc){
             return `<div class=''>

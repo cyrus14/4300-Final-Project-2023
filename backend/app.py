@@ -3,6 +3,7 @@ import os
 from flask import Flask, render_template, request
 from flask_cors import CORS
 from helpers.MySQLDatabaseHandler import MySQLDatabaseHandler
+from return_songs import find_nonzero_indices
 
 # ROOT_PATH for linking with all your files. 
 # Feel free to use a config.py or settings.py with a global export variable
@@ -16,10 +17,10 @@ MYSQL_USER_PASSWORD = "myna5791"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "kardashiandb"
 
-mysql_engine = MySQLDatabaseHandler(MYSQL_USER,MYSQL_USER_PASSWORD,MYSQL_PORT,MYSQL_DATABASE)
+# mysql_engine = MySQLDatabaseHandler(MYSQL_USER,MYSQL_USER_PASSWORD,MYSQL_PORT,MYSQL_DATABASE)
 
-# Path to init.sql file. This file can be replaced with your own file for testing on localhost, but do NOT move the init.sql file
-mysql_engine.load_file_into_db()
+# # Path to init.sql file. This file can be replaced with your own file for testing on localhost, but do NOT move the init.sql file
+# mysql_engine.load_file_into_db()
 
 app = Flask(__name__)
 CORS(app)
@@ -37,10 +38,17 @@ def sql_search(episode):
 def home():
     return render_template('base.html',title="sample html")
 
+@app.route('/my-link')
+def my_link():
+  current_url = request.url
+  city = current_url[current_url.index('key=') + 4:]
+  city = city.replace('_', ' ')
+  return find_nonzero_indices(city)
+
 @app.route("/episodes")
 def episodes_search():
     text = request.args.get("title")
     return sql_search(text)
 
 
-app.run(debug=True)
+#app.run(debug=True)
