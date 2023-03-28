@@ -11,7 +11,7 @@ results
         <div class="full-body-container-2">
 
             <div class="header">
-                <a href="/" onclick="goBack()"><span class="back">(⇐ back)</span></a>
+                <a href="/"><span class="back">(⇐ back)</span></a>
                 <h1 id="title-t">here's your playlist...</h1>
             </div>
 
@@ -50,15 +50,5 @@ results
     </div>
 </body>
 
-<script>
-function goBack() {
-  
-  let searchParams = new URLSearchParams(window.location.search);
-  let keyParam = searchParams.get('key');
-  window.location.href = '/key='+keyParam
-  console.log('Going back!');
-  event.preventDefault();
-}
-</script>
 
 {% endblock %}
