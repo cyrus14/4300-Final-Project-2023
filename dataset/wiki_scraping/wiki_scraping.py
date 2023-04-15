@@ -18,7 +18,10 @@ def scrape(wiki_all_words_count):
         wiki_all_words_count += Counter(txt)
         texts[title] = txt
 
+
+scrape(wiki_all_words_count)
+
+
 with open('wiki_texts.json', 'w') as f:
     json.dump(texts, f)
 
-scrape(wiki_all_words_count)
