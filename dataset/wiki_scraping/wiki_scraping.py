@@ -21,7 +21,9 @@ def scrape(wiki_all_words_count):
 
 scrape(wiki_all_words_count)
 
+culture_TO = tokenize(wiki_wiki.page('Culture in Toronto').text)
+
+texts['Toronto'] = texts['Toronto'] + culture_TO
 
 with open('wiki_texts.json', 'w') as f:
     json.dump(texts, f)
-
