@@ -1,8 +1,11 @@
 import json
+import pandas as pd
 import os
 from flask import Flask, render_template, request
 from flask_cors import CORS
 from helpers.MySQLDatabaseHandler import MySQLDatabaseHandler
+import helpers.query as apq 
+import pickle
 from return_songs import find_nonzero_indices
 
 # https://spotipy.readthedocs.io/en/2.22.1/
@@ -17,7 +20,7 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # These are the DB credentials for your OWN MySQL
 # Don't worry about the deployment credentials, those are fixed
 # You can use a different DB name if you want to
-CREDS = json.load(open('./conf.json', 'r+'))
+CREDS = json.load(open(os.environ['ROOT_PATH'] + '/4300-Final-Project-2023/backend/conf.json', 'r+'))
 
 MYSQL_USER = CREDS['sql_user']
 MYSQL_USER_PASSWORD = CREDS['sql_user_pwd']
@@ -51,8 +54,6 @@ CLIENT_PRIVATE = CREDS['spotify_private']
 
 sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(CLIENT_ID, CLIENT_PRIVATE))
 
-# print('hey hey hey heres a playlist', sp.playlist('6Lt5r7BdOM87jphRlYA1zv'))
-
 @app.route("/")
 def home():
         return render_template('home.html', title="sample html")
@@ -64,6 +65,62 @@ def my_link():
     current_url = request.url
     city = current_url[current_url.index('key=') + 4:]
     cityClean = city.replace('_', ' ')
+
+    content = apq.top_songs_query(cityClean)
+
+    content_integrated = {}
+
+    # spotify integration
+    # this STILL needs to be heavily refined
+
+    for item in content:
+        title = item['title'].lower().replace(' ', '%20')
+        artist = item['artist'].lower().replace(' ', '%20')
+        year = str(item['year'])
+
+        # spotify query construction
+        spq = "track\:" + title + "%20artist\:" + artist + "%20year\:" + year
+
+        # spotify query result
+        results = sp.search(spq, limit=1, type='track')
+        track = results['tracks']['items']
+
+        key = item['title']
+
+        content_integrated[key] = {'song': '', 
+                                             'song_link': '', 
+                                             'artists': [], 
+                                             'artists_links': [], 
+                                             'album_art': '', 
+                                             'album_link': '', 
+                                             'year': ''}
+        
+
+        if (len(track) > 0 and ((item['title'].lower() in track[0]['name'].lower()) or (track[0]['artists'][0]['name'].lower() in item['artist'].lower()))):
+            track = track[0]
+
+            for i in track['artists']:
+                  content_integrated[key]['artists'].append(i['name'])
+                  content_integrated[key]['artists_links'].append(i['uri'])
+            
+            content_integrated[key]['song'] = item['title']
+            content_integrated[key]['song_link'] = track['uri']
+
+            content_integrated[key]['year'] = year
+
+            content_integrated[key]['album_art'] = track['album']['images'][1]['url']
+            content_integrated[key]['album_link'] = track['album']['uri']
+        else:
+            # print(len(track))
+            # print(track)
+            
+            content_integrated[key]['artists'].append(item['artist'])
+
+            content_integrated[key]['song'] = item['title']
+            content_integrated[key]['year']
+    
+    '''
+
     content = find_nonzero_indices(cityClean)
 
     content_integrated = {}
@@ -117,20 +174,9 @@ def my_link():
             content_integrated[key]['song'] = song[0]
             content_integrated[key]['year']
 
+    '''
+
     return render_template('results.html', data=content_integrated)
 
 
-@app.route("/episodes")
-def episodes_search():
-    text = request.args.get("title")
-    return sql_search(text)
-
-
-'''
-@app.route('/results')
-def results():
-    return render_template('results.html')
-'''
-
-
-# app.run(debug=True)
+app.run(debug=True)
