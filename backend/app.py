@@ -179,4 +179,4 @@ def my_link():
     return render_template('results.html', data=content_integrated)
 
 
-# app.run(debug=True)
+app.run(debug=True)
