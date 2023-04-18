@@ -176,7 +176,7 @@ def my_link():
 
     '''
 
-    return render_template('results.html', data=content_integrated)
+    return render_template('results.html', data=content_integrated, city=cityClean)
 
 
 app.run(debug=False)
