@@ -36,7 +36,7 @@ with zipfile.ZipFile(os.environ['ROOT_PATH'] + '/dataset/big_df_edited.csv.zip',
     zip_ref.extractall(os.environ['ROOT_PATH'] + 'dataset/')
 
 # read in "edited" csv (shortened)
-big_df = pd.read_csv('dataset/big_df_edited.csv')
+big_df = pd.read_csv('./dataset/big_df_edited.csv')
 
 '''
 # unpickle wiki_tf_idf (vec2)
