@@ -9,10 +9,20 @@ import zipfile
 
 # PICKLE :)
 
-big_df = pd.read_csv('../../dataset/big_df_edited.csv')
+root_path = os.path.abspath(os.path.join("..", os.curdir))
+os.environ['ROOT_PATH'] = root_path
 
+# Get a list of all items in the current directory
+items = os.listdir(root_path)
 
-os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
+# Filter out only the directories
+directories = [item for item in items if os.path.isdir(
+    os.path.join(root_path, item))]
+
+# Print the directories
+print("Directories that you can cd into:")
+for directory in directories:
+    print(directory)
 
 # unpickle wiki_tf_idf (vec2)
 with open(os.environ['ROOT_PATH'] + '/wiki_tf_idf.pkl', 'rb') as pickle_file:
@@ -38,7 +48,7 @@ with zipfile.ZipFile(os.environ['ROOT_PATH'] + 'dataset/big_df_edited.csv.zip', 
     zip_ref.extractall(os.environ['ROOT_PATH'] + 'dataset/')
 
 # read in "edited" csv (shortened)
-# big_df = pd.read_csv('dataset/big_df_edited.csv')
+big_df = pd.read_csv('dataset/big_df_edited.csv')
 
 '''
 # unpickle wiki_tf_idf (vec2)
