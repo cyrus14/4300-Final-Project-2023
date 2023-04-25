@@ -11,6 +11,8 @@ import zipfile
 
 os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 
+print(os.environ['ROOT_PATH'])
+
 # unpickle wiki_tf_idf (vec2)
 with open(os.environ['ROOT_PATH'] + '/4300-Final-Project-2023/' + 'wiki_tf_idf.pkl', 'rb') as pickle_file:
     wiki_tfidf = pickle.load(pickle_file)
@@ -32,7 +34,8 @@ with open(os.environ['ROOT_PATH'] + '/4300-Final-Project-2023/' + 'index_to_song
     idx_to_song = pickle.load(pickle_file)
 
 with zipfile.ZipFile(os.environ['ROOT_PATH'] + '/4300-Final-Project-2023/' + 'dataset/big_df_edited.csv.zip', 'r') as zip_ref:
-    zip_ref.extractall(os.environ['ROOT_PATH'] + '/4300-Final-Project-2023/' + 'dataset/')
+    zip_ref.extractall(os.environ['ROOT_PATH'] +
+                       '/4300-Final-Project-2023/' + 'dataset/')
 
 # read in "edited" csv (shortened)
 big_df = pd.read_csv('dataset/big_df_edited.csv')
@@ -62,10 +65,13 @@ with open('index_to_song.pkl', 'rb') as pickle_file:
 big_df = pd.read_csv('dataset/big_df_edited.csv')
 '''
 
+
 def test():
     print('hello')
 
 # cosine similarity function
+
+
 def cos_sim(city, song):
     city_i = loc_to_idx[city]
     song_i = song_to_idx[song]
@@ -75,25 +81,26 @@ def cos_sim(city, song):
     num = city_vec @ song_vec
     return (num) / (denom)
 
+
 def top_songs_query(city):
     best = []
     returned = []
     for song in song_to_idx:
-        sim = cos_sim(city, song)        
+        sim = cos_sim(city, song)
         pop = math.log(big_df.iloc[song_to_idx[song]]['views'] + 1)
         score = sim * pop
-        
+
         best.append((song, sim, pop, score))
-    srtd = sorted(best, key = lambda x: x[3], reverse=True)
+    srtd = sorted(best, key=lambda x: x[3], reverse=True)
     for t in srtd[:10]:
         retrieved = big_df.iloc[song_to_idx[t[0]]]
-        result = {'title': retrieved['title'], \
-                    'artist': retrieved['artist'], \
-                    'year': retrieved['year'], \
-                    'views': retrieved['views'], \
-                    'sim' : t[1], \
-                    'score': t[3]}
-        
+        result = {'title': retrieved['title'],
+                  'artist': retrieved['artist'],
+                  'year': retrieved['year'],
+                  'views': retrieved['views'],
+                  'sim': t[1],
+                  'score': t[3]}
+
         returned.append(result)
 
     return returned
