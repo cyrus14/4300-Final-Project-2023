@@ -12,14 +12,6 @@ import zipfile
 root_path = os.path.abspath(os.curdir)
 os.environ['ROOT_PATH'] = root_path
 
-# Get a list of all items in the current directory
-items = os.listdir(root_path)
-
-# Print the directories
-print("Directories that you can cd into:")
-for item in items:
-    print(item)
-
 # unpickle wiki_tf_idf (vec2)
 with open(os.environ['ROOT_PATH'] + '/wiki_tf_idf.pkl', 'rb') as pickle_file:
     wiki_tfidf = pickle.load(pickle_file)
