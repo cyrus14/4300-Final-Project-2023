@@ -38,7 +38,7 @@ with open(os.environ['ROOT_PATH'] + '/index_to_song.pkl', 'rb') as pickle_file:
     idx_to_song = pickle.load(pickle_file)
 
 with zipfile.ZipFile(os.environ['ROOT_PATH'] + '/dataset/big_df_edited.csv.zip', 'r') as zip_ref:
-    zip_ref.extractall(os.environ['ROOT_PATH'] + '/')
+    zip_ref.extractall(os.environ['ROOT_PATH'] + 'dataset/')
 
 # read in "edited" csv (shortened)
 # items = os.listdir(root_path)
