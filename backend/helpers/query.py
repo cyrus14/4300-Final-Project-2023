@@ -40,7 +40,7 @@ items = os.listdir(root_path)
 
 for item in items:
     print(item)
-big_df = pd.read_csv(os.environ['ROOT_PATH'] + '/dataset/big_df_edited.csv')
+big_df = pd.read_csv(os.environ['ROOT_PATH'] + '/big_df_edited.csv')
 
 items = os.listdir(root_path)
 
