@@ -15,14 +15,10 @@ os.environ['ROOT_PATH'] = root_path
 # Get a list of all items in the current directory
 items = os.listdir(root_path)
 
-# Filter out only the directories
-directories = [item for item in items if os.path.isdir(
-    os.path.join(root_path, item))]
-
 # Print the directories
 print("Directories that you can cd into:")
-for directory in directories:
-    print(directory)
+for item in items:
+    print(item)
 
 # unpickle wiki_tf_idf (vec2)
 with open(os.environ['ROOT_PATH'] + '/wiki_tf_idf.pkl', 'rb') as pickle_file:
