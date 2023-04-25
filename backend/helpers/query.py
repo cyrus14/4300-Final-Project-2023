@@ -12,23 +12,23 @@ import zipfile
 os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 
 # unpickle wiki_tf_idf (vec2)
-with open(os.environ['ROOT_PATH'] + 'wiki_tf_idf.pkl', 'rb') as pickle_file:
+with open(os.environ['ROOT_PATH'] + '/wiki_tf_idf.pkl', 'rb') as pickle_file:
     wiki_tfidf = pickle.load(pickle_file)
 
 # unpickle song_tf_idf (X)
-with open(os.environ['ROOT_PATH'] + 'song_tf_idf.pkl', 'rb') as pickle_file:
+with open(os.environ['ROOT_PATH'] + '/song_tf_idf.pkl', 'rb') as pickle_file:
     song_tfidf = pickle.load(pickle_file).toarray()
 
 # unpickle loc_to_index
-with open(os.environ['ROOT_PATH'] + 'loc_to_index.pkl', 'rb') as pickle_file:
+with open(os.environ['ROOT_PATH'] + '/loc_to_index.pkl', 'rb') as pickle_file:
     loc_to_idx = pickle.load(pickle_file)
 
 # unpickle song_to_index
-with open(os.environ['ROOT_PATH'] + 'song_to_index.pkl', 'rb') as pickle_file:
+with open(os.environ['ROOT_PATH'] + '/song_to_index.pkl', 'rb') as pickle_file:
     song_to_idx = pickle.load(pickle_file)
 
 # unpickle index_to_song
-with open(os.environ['ROOT_PATH'] + 'index_to_song.pkl', 'rb') as pickle_file:
+with open(os.environ['ROOT_PATH'] + '/index_to_song.pkl', 'rb') as pickle_file:
     idx_to_song = pickle.load(pickle_file)
 
 with zipfile.ZipFile(os.environ['ROOT_PATH'] + 'dataset/big_df_edited.csv.zip', 'r') as zip_ref:
