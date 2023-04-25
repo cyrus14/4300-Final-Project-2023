@@ -18,6 +18,9 @@ from spotipy.oauth2 import SpotifyClientCredentials
 root_path = os.path.abspath(os.curdir)
 os.environ['ROOT_PATH'] = root_path
 
+# FOR TESTING LOCALLY
+# os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
+
 # These are the DB credentials for your OWN MySQL
 # Don't worry about the deployment credentials, those are fixed
 # You can use a different DB name if you want to
