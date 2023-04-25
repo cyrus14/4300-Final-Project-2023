@@ -10,7 +10,8 @@ import zipfile
 # PICKLE :)
 
 parent_directory = os.path.abspath(os.path.join("..", os.curdir))
-parent_of_parent_directory = os.path.dirname(parent_directory)
+parent_of_parent_directory = os.path.abspath(
+    os.path.join("..", parent_directory))
 
 os.environ['ROOT_PATH'] = parent_of_parent_directory
 
