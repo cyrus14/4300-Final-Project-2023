@@ -9,7 +9,7 @@ import zipfile
 
 # PICKLE :)
 
-big_df = pd.read_csv('dataset/big_df_edited.csv')
+big_df = pd.read_csv('./dataset/big_df_edited.csv')
 
 
 os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
