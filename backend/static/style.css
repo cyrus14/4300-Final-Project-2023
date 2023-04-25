@@ -14,7 +14,7 @@
 }**/
 body{
     /**background-image: linear-gradient(45deg, #0C0032, #3500D3);;**/
-    background-color: #262B40;
+    background-color: #1C1C1F;
 }
 .main{
     position: fixed;
@@ -38,7 +38,9 @@ body{
 }
 
 #title-t{
-    color: white;
+    background: linear-gradient(to right, #b447fc, #db29ff);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .title-colors{
@@ -101,13 +103,14 @@ body{
 select {
     appearance: none;
     border: 2px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
+    border-radius: 20px;
+    font-size: 16;
     padding: 10px;
-    width: 200px;
+    width: 250px;
     color: #444;
     background-color: #fff;
     margin-top: 1em;
+    text-align: center;
   }
   
   select:focus {
@@ -123,18 +126,18 @@ select {
 
   .generate-playlist-btn {
     display: inline-block;
-    background-color: #5d9cec;
+    background: linear-gradient(to right, #b447fc, #db29ff);
     color: #fff;
     font-size: 16px;
     font-weight: bold;
     padding: 10px 20px;
-    border-radius: 5px;
+    border-radius: 20px;
     border: none;
     cursor: pointer;
   }
 
   .generate-playlist-btn:hover {
-    background-color: #428bca;
+    background: linear-gradient(to right, #a030e0, #c010e0);
   }
 
   .slider {
