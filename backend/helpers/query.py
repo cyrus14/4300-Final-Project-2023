@@ -36,7 +36,14 @@ with zipfile.ZipFile(os.environ['ROOT_PATH'] + '/dataset/big_df_edited.csv.zip',
     zip_ref.extractall(os.environ['ROOT_PATH'] + 'dataset/')
 
 # read in "edited" csv (shortened)
+items = os.listdir(root_path)
+
+for item in items:
+    print(item)
 big_df = pd.read_csv(os.environ['ROOT_PATH'] + '/dataset/big_df_edited.csv')
+
+items = os.listdir(root_path)
+
 
 '''
 # unpickle wiki_tf_idf (vec2)
