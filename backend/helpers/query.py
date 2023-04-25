@@ -9,7 +9,11 @@ import zipfile
 
 # PICKLE :)
 
-os.environ['ROOT_PATH'] = os.path.abspath(os.curdir)
+parent_directory = os.path.abspath(os.path.join("..", os.curdir))
+parent_of_parent_directory = os.path.dirname(parent_directory)
+
+os.environ['ROOT_PATH'] = parent_of_parent_directory
+
 
 print(os.environ['ROOT_PATH'])
 
