@@ -9,7 +9,7 @@ import zipfile
 
 # PICKLE :)
 
-root_path = os.path.abspath(os.path.join("..", os.curdir))
+root_path = os.path.abspath(os.curdir)
 os.environ['ROOT_PATH'] = root_path
 
 # Get a list of all items in the current directory
