@@ -5,6 +5,11 @@ import json
 import math
 import os
 import zipfile
+import ast
+from scipy.sparse.linalg import svds
+from sklearn.preprocessing import normalize
+
+
 # from app import wiki_tfidf, song_tfidf, loc_to_idx, song_to_idx, idx_to_song, big_df
 
 # PICKLE :)
@@ -34,6 +39,9 @@ with open(os.environ['ROOT_PATH'] + '/song_to_index.pkl', 'rb') as pickle_file:
 with open(os.environ['ROOT_PATH'] + '/index_to_song.pkl', 'rb') as pickle_file:
     idx_to_song = pickle.load(pickle_file)
 
+with open(os.environ['ROOT_PATH'] + '/vectorizer.pkl', 'rb') as pickle_file:
+    vectorizer = pickle.load(pickle_file)
+
 with zipfile.ZipFile(os.environ['ROOT_PATH'] + '/dataset/big_df_edited.csv.zip', 'r') as zip_ref:
     zip_ref.extractall(os.environ['ROOT_PATH'] + '/dataset/')
 
@@ -45,6 +53,48 @@ with zipfile.ZipFile(os.environ['ROOT_PATH'] + '/dataset/big_df_edited.csv.zip',
 
 
 big_df = pd.read_csv(os.environ['ROOT_PATH'] + '/dataset/big_df_edited.csv')
+
+big_df['emotions'] = big_df['emotions'].apply(ast.literal_eval)
+big_df['emotions'] = big_df['emotions'].apply(lambda x: [tup[0] for tup in x])
+
+unique_tags = set([j for sub in big_df['emotions'].values for j in sub])
+tag_to_index = {t:i for i, t in enumerate(unique_tags)}
+index_to_tag = {i:t for i, t in enumerate(unique_tags)}
+
+song_tag_mat = np.zeros((big_df.shape[0], len(unique_tags)))
+for i in range(big_df.shape[0]):
+    tags = big_df['emotions'].iloc[i]
+    for t in tags:
+        j = tag_to_index[t]
+        song_tag_mat[i, j] = 1
+
+N_FEATS = 10
+docs_compressed, s, words_compressed = svds(song_tag_mat, k=N_FEATS)
+words_compressed = words_compressed.transpose()
+words_compressed_normed = normalize(words_compressed, axis = 1)
+docs_compressed_normed = normalize(docs_compressed, axis=1)
+
+td_matrix_np = song_tag_mat.transpose()
+td_matrix_np = normalize(td_matrix_np)
+
+def get_query_vec(query):
+    query_tagf = np.zeros((1,len(unique_tags)))
+    for wrd in query.split():
+        if wrd in unique_tags:
+            i = tag_to_index[wrd]
+            query_tagf[0,i] += 1
+    return normalize(query_tagf @ words_compressed)
+
+def closest_songs_to_query(query, k = 5):
+    query_vec = get_query_vec(query)
+    sims = normalize(query_vec).dot(docs_compressed_normed.T)[0]
+    asort = np.argsort(-sims)[:k+1]
+    return [ {'title':big_df['title'].iloc[i], 
+              'artist':big_df['artist'].iloc[i], 
+              'year':big_df['year'].iloc[i], 
+              'views':big_df['views'].iloc[i], 
+              'sim':sims[i], 
+              'score':sims[i]} for i in asort[0:]]
 
 
 '''
@@ -72,13 +122,10 @@ with open('index_to_song.pkl', 'rb') as pickle_file:
 big_df = pd.read_csv('dataset/big_df_edited.csv')
 '''
 
-
 def test():
     print('hello')
 
 # cosine similarity function
-
-
 def cos_sim(city, song):
     city_i = loc_to_idx[city]
     song_i = song_to_idx[song]
@@ -86,19 +133,23 @@ def cos_sim(city, song):
     song_vec = song_tfidf[song_i, :]
     denom = np.linalg.norm(city_vec) * np.linalg.norm(song_vec)
     num = city_vec @ song_vec
-    return (num) / (denom)
+    return (num + 0.5) / (denom + 0.5)
 
-
-def top_songs_query(city):
+def top_songs_query(city, query = "happy peaceful"):
     best = []
     returned = []
+    # query_emot_vec = closest_songs_to_query(query, k=10)
+    query_vec = get_query_vec(query)
     for song in song_to_idx:
         sim = cos_sim(city, song)
         pop = math.log(big_df.iloc[song_to_idx[song]]['views'] + 1)
-        score = sim * pop
 
-        best.append((song, sim, pop, score))
-    srtd = sorted(best, key=lambda x: x[3], reverse=True)
+        song_emot_vec = docs_compressed[song_to_idx[song], :]
+        emot_score = query_vec @ song_emot_vec
+                    
+        score = sim * pop * emot_score
+        best.append((song, sim, pop, emot_score, score))
+    srtd = sorted(best, key=lambda x: x[-1], reverse=True)
     for t in srtd[:10]:
         retrieved = big_df.iloc[song_to_idx[t[0]]]
         result = {'title': retrieved['title'],
