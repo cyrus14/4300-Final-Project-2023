@@ -14,11 +14,10 @@ root_path = os.path.abspath(os.curdir)
 
 os.environ['ROOT_PATH'] = root_path
 
-# FOR TESTING LOCALLY
-# os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
+print(os.environ['ROOT_PATH'])
 
 # unpickle wiki_tf_idf (vec2)
-with open(os.environ['ROOT_PATH'] + '/wiki_tf_idf.pkl', 'rb') as pickle_file:
+with open(os.environ['ROOT_PATH'] + '/4300-Final-Project-2023/' + 'wiki_tf_idf.pkl', 'rb') as pickle_file:
     wiki_tfidf = pickle.load(pickle_file)
 
 # unpickle song_tf_idf (X)
