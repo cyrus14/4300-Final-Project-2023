@@ -135,7 +135,7 @@ def cos_sim(city, song):
     num = city_vec @ song_vec
     return (num + 0.5) / (denom + 0.5)
 
-def top_songs_query(city, query = "happy peaceful"):
+def top_songs_query(city, query = "sad energetic"):
     best = []
     returned = []
     # query_emot_vec = closest_songs_to_query(query, k=10)
