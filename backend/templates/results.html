@@ -39,6 +39,10 @@ results
                                         {% endfor %}
                                     {% endif %}
                                 </h3>
+                                <span style='color: red'>sim: {{ data[item]['sim'] }}</span> <br>
+                                <span style='color: red'>pop: {{ data[item]['pop'] }}</span> <br>
+                                <span style='color: red'>emot: {{ data[item]['emot'][0] }}</span> <br>
+                                <span style='color: blue'>score: {{ data[item]['score'][0] }}</span>
                             </div>
                         </div>
                     </div>
