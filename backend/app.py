@@ -99,7 +99,14 @@ def my_link():
                                    'artists_links': [],
                                    'album_art': '',
                                    'album_link': '',
-                                   'year': ''}
+                                   'year': '',
+                                   'sim': item['sim'], 
+                                   'pop': item['pop'],
+                                   'emot': item['emot'],
+                                   'score': item['score']}
+        
+        print(content_integrated[key]['sim'])
+        print(content_integrated[key]['pop'])
 
         if (len(track) > 0 and ((item['title'].lower() in track[0]['name'].lower()) or (track[0]['artists'][0]['name'].lower() in item['artist'].lower()))):
             track = track[0]
