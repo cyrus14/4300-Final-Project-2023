@@ -68,6 +68,9 @@ for i in range(big_df.shape[0]):
         j = tag_to_index[t]
         song_tag_mat[i, j] = 1
 
+big_df['log_views'] = np.log(big_df['views'] + 1)
+big_df['norm_views'] = big_df['log_views'] / max(big_df['log_views'])
+
 N_FEATS = 10
 docs_compressed, s, words_compressed = svds(song_tag_mat, k=N_FEATS)
 words_compressed = words_compressed.transpose()
@@ -135,19 +138,23 @@ def cos_sim(city, song):
     num = city_vec @ song_vec
     return (num + 0.5) / (denom + 0.5)
 
-def top_songs_query(city, query = "happy peaceful"):
+def top_songs_query(city, query = "excited happy"):
     best = []
     returned = []
     # query_emot_vec = closest_songs_to_query(query, k=10)
     query_vec = get_query_vec(query)
     for song in song_to_idx:
-        sim = cos_sim(city, song) 
-        pop = math.log(big_df.iloc[song_to_idx[song]]['views'] + 1)
+        sim = cos_sim(city, song)
+
+        if sim == 1.0:
+            sim = 0
+    
+        pop = big_df['norm_views'].iloc[song_to_idx[song]] 
 
         song_emot_vec = docs_compressed[song_to_idx[song], :]
-        emot_score = query_vec @ song_emot_vec 
+        emot_score = (query_vec @ song_emot_vec) * 10
                     
-        score = sim * pop * emot_score
+        score = (sim ** 2) * (pop) * (emot_score ** 2)
         best.append((song, sim, pop, emot_score, score))
     srtd = sorted(best, key=lambda x: x[-1], reverse=True)
     for t in srtd[:10]:
@@ -157,7 +164,8 @@ def top_songs_query(city, query = "happy peaceful"):
                   'year': retrieved['year'],
                   'views': retrieved['views'],
                   'sim': t[1],
-                  'popularity':t[2],
+                  'pop':t[2],
+                  'emot': t[3],
                   'score': t[-1]}
 
         returned.append(result)
