@@ -184,4 +184,4 @@ def my_link():
     return render_template('results.html', data=content_integrated, city=cityClean)
 
 
-# app.run(debug=False)
+app.run(debug=False)
