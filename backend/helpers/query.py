@@ -141,11 +141,11 @@ def top_songs_query(city, query = "happy peaceful"):
     # query_emot_vec = closest_songs_to_query(query, k=10)
     query_vec = get_query_vec(query)
     for song in song_to_idx:
-        sim = cos_sim(city, song) + 0.5
-        pop = math.log(big_df.iloc[song_to_idx[song]]['views'] + 0.5)
+        sim = cos_sim(city, song) 
+        pop = math.log(big_df.iloc[song_to_idx[song]]['views'] + 1)
 
         song_emot_vec = docs_compressed[song_to_idx[song], :]
-        emot_score = query_vec @ song_emot_vec + 0.5
+        emot_score = query_vec @ song_emot_vec 
                     
         score = sim * pop * emot_score
         best.append((song, sim, pop, emot_score, score))
@@ -157,7 +157,8 @@ def top_songs_query(city, query = "happy peaceful"):
                   'year': retrieved['year'],
                   'views': retrieved['views'],
                   'sim': t[1],
-                  'score': t[3]}
+                  'popularity':t[2],
+                  'score': t[-1]}
 
         returned.append(result)
 
