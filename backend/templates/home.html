@@ -6,51 +6,55 @@ home
 
 {% block body %}
 
-<body> 
+<body>
 
-    <div class="main"></div>
+  <div class="main"></div>
 
-    <div class="full-body-container">
-        <div class="top-text">
-            <div class="title-colors">
-                <h1 id="title-t">apollocate</h1>
-                
-            </div>
+  <div class="full-body-container">
+    <div class="top-text">
+      <div class="title-colors">
+        <h1 id="title-t">apollocate</h1>
 
-            <select id = "city">
-                <option value="New_York_City">New York City, USA</option>
-                <option value="London">London, UK</option>
-                <option value="Mumbai">Mumbai, IND</option>
-                <option value="Toronto">Toronto, CAN</option>
-                <option value="Tokyo">Tokyo, JPN</option>
-            </select>
+      </div>
 
-            <div class="spacer"></div>
+      <select id="city">
+        <option value="New_York_City">New York City, USA</option>
+        <option value="London">London, UK</option>
+        <option value="Mumbai">Mumbai, IND</option>
+        <option value="Toronto">Toronto, CAN</option>
+        <option value="Tokyo">Tokyo, JPN</option>
+        <option value="Tel_Aviv">Tel Aviv, IS</option>
+        <option value="Seoul">Seoul, KOR</option>
 
-              <div class = "labels">
-              <label for="slider" >Sad</label>
-              <input type="range" min="0" max="100" value="50" class="slider">
-              <label for="slider" >Happy</label>
-              </div>
 
-              <div class = "labels">
-              <label for="slider2" >Calm</label>
-              <input type="range" min="0" max="100" value="50" class="slider" id="slider2">
-              <label for="slider2" >Angry</label>
-            </div>
-              
-            <div class = "labels">
-              <label for="slider3" >Peaceful</label>
-              <input type="range" min="0" max="100" value="50" class="slider" id="slider3">
-              <label for="slider3" >Energetic</label>
-            </div>
-              
-        
-            <div class="spacer"></div>
-                
-            <button onclick= 'myFunction()' class="generate-playlist-btn">generate playlist</button>
+      </select>
 
-            <!--
+      <div class="spacer"></div>
+
+      <div class="labels">
+        <label for="slider">Sad</label>
+        <input type="range" min="0" max="100" value="50" class="slider">
+        <label for="slider">Happy</label>
+      </div>
+
+      <div class="labels">
+        <label for="slider2">Calm</label>
+        <input type="range" min="0" max="100" value="50" class="slider" id="slider2">
+        <label for="slider2">Angry</label>
+      </div>
+
+      <div class="labels">
+        <label for="slider3">Peaceful</label>
+        <input type="range" min="0" max="100" value="50" class="slider" id="slider3">
+        <label for="slider3">Energetic</label>
+      </div>
+
+
+      <div class="spacer"></div>
+
+      <button onclick='myFunction()' class="generate-playlist-btn">generate playlist</button>
+
+      <!--
             <table>
                 <thead>
                   <tr>
@@ -69,64 +73,64 @@ home
               </table>
             -->
 
-              
-            
-            <!-- <div class="input-box" onclick="sendFocus()">
+
+
+      <!-- <div class="input-box" onclick="sendFocus()">
                 <img src="{{ url_for('static', filename='images/mag.png') }}" />
                 <input placeholder="Search for a Keeping up with the Kardashians episode" id="filter-text-val" onkeyup="filterText()">
             </div> -->
-            
-        </div>
-        <div id="answer-box">
 
-        </div>
     </div>
+    <div id="answer-box">
 
-    
-
-    <script>
-        var selectElement = document.getElementById("city");
-
-        for (var i = 0; i < selectElement.options.length; i++) {
-            if (selectElement.options[i].value === keyParam) {
-            selectElement.selectedIndex = i;
-            break;
-            }
-        }
+    </div>
+  </div>
 
 
-        function myFunction(){
-            var city = document.getElementById("city").value
-            window.location.href = '/results?key=' + city
-        }
 
-        
-        function answerBoxTemplate(title,titleDesc){
-            return `<div class=''>
+  <script>
+    var selectElement = document.getElementById("city");
+
+    for (var i = 0; i < selectElement.options.length; i++) {
+      if (selectElement.options[i].value === keyParam) {
+        selectElement.selectedIndex = i;
+        break;
+      }
+    }
+
+
+    function myFunction() {
+      var city = document.getElementById("city").value
+      window.location.href = '/results?key=' + city
+    }
+
+
+    function answerBoxTemplate(title, titleDesc) {
+      return `<div class=''>
                 <h3 class='episode-title'>${title}</h3>
                 <p class='episode-desc'>${titleDesc}</p>
             </div>`
-        }
+    }
 
-        function sendFocus(){
-            document.getElementById('filter-text-val').focus()
-        }
+    function sendFocus() {
+      document.getElementById('filter-text-val').focus()
+    }
 
-        function filterText(){
-            document.getElementById("answer-box").innerHTML = ""
-            console.log(document.getElementById("filter-text-val").value)
-            fetch("/episodes?" + new URLSearchParams({ title: document.getElementById("filter-text-val").value }).toString())
-            .then((response) => response.json())
-            .then((data) => data.forEach(row => {
-                
-                let tempDiv = document.createElement("div")
-                tempDiv.innerHTML = answerBoxTemplate(row.title,row.descr)
-                document.getElementById("answer-box").appendChild(tempDiv)
-            }));
+    function filterText() {
+      document.getElementById("answer-box").innerHTML = ""
+      console.log(document.getElementById("filter-text-val").value)
+      fetch("/episodes?" + new URLSearchParams({ title: document.getElementById("filter-text-val").value }).toString())
+        .then((response) => response.json())
+        .then((data) => data.forEach(row => {
 
-        }
-            
-    </script>
+          let tempDiv = document.createElement("div")
+          tempDiv.innerHTML = answerBoxTemplate(row.title, row.descr)
+          document.getElementById("answer-box").appendChild(tempDiv)
+        }));
+
+    }
+
+  </script>
 </body>
 
 {% endblock %}
