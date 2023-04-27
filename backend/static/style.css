@@ -39,6 +39,7 @@ body{
 
 #title-t{
     background: linear-gradient(to right, #b447fc, #db29ff);
+    -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
