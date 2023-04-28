@@ -73,7 +73,7 @@ home
 
 
   <script>
-    data =['peaceful', 'springlike', 'warm', 'tragic', 'anxiety', 'funereal', 'quiet', 'fighting', 'funny', 'happiness', 'dreary', 'excite', 'elegiac', 'rowdy', 'paranoid', 'intensive', 'bitter', 'outrageous', 'bittersweet', 'angst-ridden', 'poignant', 'high spirits', 'feverish', 'heartbroken', 'celebrate', 'sooth', 'savage', 'playful', 'fun', 'happy music', 'fiery', 'excited', 'happy', 'aggression', 'ebullient', 'cheerup', 'serenity', 'humor', 'rebel', 'peace', 'moving', 'jolly', 'depressed', 'tense', 'tragedy', 'comfort', 'unhappy', 'melancholic', 'fight', 'delicate', 'calmness', 'bleak', 'joyful', 'gentle', 'campy', 'unfortunate', 'happy songs', 'festive', 'grim', 'aggressive', 'mournful', 'rough', 'zest', 'romantic', 'hostile', 'tranquil', 'heartbreaking', 'boisterous', 'cheer-up', 'desire', 'sadness', 'silly', 'blue', 'merry', 'military', 'misery', 'sorrow', 'martial', 'crusty', 'vigorous', 'lamenting', 'sad', 'calm', 'dark', 'cheerful', 'confrontational', 'soothe', 'frightening', 'cheer', 'fury', 'wintry', 'desperate', 'celebratory', 'passionate', 'lament', 'untroubled', 'autumnal', 'heartbreak', 'funeral', 'rebellious', 'furious', 'exhilarating', 'passion', 'march', 'relax', 'weep', 'joyous', 'rollicking', 'arousing', 'intense', 'volatile', 'unworried', 'outraged', 'exciting', 'weltschmerz', 'anguished', 'introspective', 'contemplate', 'tender', 'sorry', 'anxious', 'anger', 'mellow', 'annoying', 'quietly', 'somber', 'plaintive', 'brokenheart', 'calmed', 'contemplative', 'rambunctious', 'conflict', 'tough', 'humorous', 'bright', 'touching', 'weeping', 'excitement', 'mourn', 'relaxing', 'serene', 'melancholy', 'marching', 'relaxed', 'visceral', 'angst', 'sexy', 'angry', 'depressive', 'rage', 'introverted', 'ardor', 'severe', 'spooky', 'detached', 'animated', 'gloomy', 'unconcerned', 'thrilling', 'thrill', 'smooth', 'dreamy', 'despondent', 'miserable', 'energetic', 'lively', 'harsh', 'apocalyptic', 'soft', 'party', 'eerie', 'revolt', 'confident', 'peppy', 'gleeful', 'cry', 'vigor', 'amiable', 'depressing', 'macabre', 'quietness', 'grief', 'troubled', 'soothing', 'enraged', 'cheering', 'mad', 'sob', 'glad', 'fear', 'dejected', 'enthusiastic', 'sobbing', 'crying', 'fierce', 'nervous']
+    data =['peaceful', 'springlike', 'warm', 'tragic', 'anxiety', 'funereal', 'quiet', 'fighting', 'funny', 'happiness', 'dreary', 'excite', 'elegiac', 'rowdy', 'paranoid', 'intensive', 'bitter', 'outrageous', 'bittersweet', 'angst-ridden', 'poignant', 'feverish', 'heartbroken', 'celebrate', 'sooth', 'savage', 'playful', 'fun', 'fiery', 'excited', 'happy', 'aggression', 'ebullient', 'cheerup', 'serenity', 'humor', 'rebel', 'peace', 'moving', 'jolly', 'depressed', 'tense', 'tragedy', 'comfort', 'unhappy', 'melancholic', 'fight', 'delicate', 'calmness', 'bleak', 'joyful', 'gentle', 'campy', 'unfortunate', 'festive', 'grim', 'aggressive', 'mournful', 'rough', 'zest', 'romantic', 'hostile', 'tranquil', 'heartbreaking', 'boisterous', 'cheer-up', 'desire', 'sadness', 'silly', 'blue', 'merry', 'military', 'misery', 'sorrow', 'martial', 'crusty', 'vigorous', 'lamenting', 'sad', 'calm', 'dark', 'cheerful', 'confrontational', 'soothe', 'frightening', 'cheer', 'fury', 'wintry', 'desperate', 'celebratory', 'passionate', 'lament', 'untroubled', 'autumnal', 'heartbreak', 'funeral', 'rebellious', 'furious', 'exhilarating', 'passion', 'march', 'relax', 'weep', 'joyous', 'rollicking', 'arousing', 'intense', 'volatile', 'unworried', 'outraged', 'exciting', 'weltschmerz', 'anguished', 'introspective', 'contemplate', 'tender', 'sorry', 'anxious', 'anger', 'mellow', 'annoying', 'quietly', 'somber', 'plaintive', 'brokenheart', 'calmed', 'contemplative', 'rambunctious', 'conflict', 'tough', 'humorous', 'bright', 'touching', 'weeping', 'excitement', 'mourn', 'relaxing', 'serene', 'melancholy', 'marching', 'relaxed', 'visceral', 'angst', 'sexy', 'angry', 'depressive', 'rage', 'introverted', 'ardor', 'severe', 'spooky', 'detached', 'animated', 'gloomy', 'unconcerned', 'thrilling', 'thrill', 'smooth', 'dreamy', 'despondent', 'miserable', 'energetic', 'lively', 'harsh', 'apocalyptic', 'soft', 'party', 'eerie', 'revolt', 'confident', 'peppy', 'gleeful', 'cry', 'vigor', 'amiable', 'depressing', 'macabre', 'quietness', 'grief', 'troubled', 'soothing', 'enraged', 'cheering', 'mad', 'sob', 'glad', 'fear', 'dejected', 'enthusiastic', 'sobbing', 'crying', 'fierce', 'nervous']
 
     $(document).ready(function() {
       $('.js-example-basic-multiple').select2({data : data});
@@ -88,20 +88,6 @@ home
       }
     }
 
-    function moodAggregator() {
-      let moods = ""
-
-      var selectedMoods = document.getElementsByClassName('select2-selection__choice');
-      
-      for (e of selectedMoods) {
-        moods = moods + e.getAttribute('title')
-      }
-
-      console.log(moods)
-
-      return moods
-    }
-
     function myFunction() {
       var loadingWheel = document.querySelector('#loading-wheel');
       var city = document.getElementById("city").value
@@ -113,13 +99,12 @@ home
       
       for (e of selectedMoods) {
         var attr = e.getAttribute('title')
-        
-        moods = moods + e.getAttribute('title')
+        moods = moods + attr + "_"
       }
 
-      console.log(moods)
+      moods = moods.slice(0, -1)
 
-      window.location.href = '/results?key=' + city + '&mood=' + moods
+      window.location.href = '/results?key=' + city + '&moods=' + moods
 
     }
 
