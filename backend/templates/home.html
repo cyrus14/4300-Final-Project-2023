@@ -53,6 +53,7 @@ home
       <div class="spacer"></div>
 
       <button onclick='myFunction()' class="generate-playlist-btn">generate playlist</button>
+      <div id="loading-wheel"></div>
 
       <!--
             <table>
@@ -100,7 +101,9 @@ home
 
 
     function myFunction() {
+      var loadingWheel = document.querySelector('#loading-wheel');
       var city = document.getElementById("city").value
+      loadingWheel.style.display = 'block';
       window.location.href = '/results?key=' + city
     }
 
