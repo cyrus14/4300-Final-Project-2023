@@ -21,3 +21,6 @@ helpers/*
 *.csv
 
 .ipynb_checkpoints/
+
+.cache/
+backend/.cache/
