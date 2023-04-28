@@ -21,7 +21,7 @@ os.environ['ROOT_PATH'] = root_path
 
 # unpickle wiki_tf_idf (vec2)
 with open(os.environ['ROOT_PATH']  + '/wiki_tf_idf.pkl', 'rb') as pickle_file:
-    wiki_tfidf = pickle.load(pickle_file)
+    wiki_tfidf = pickle.load(pickle_file).toarray()
 
 # unpickle song_tf_idf (X)
 with open(os.environ['ROOT_PATH'] + '/song_tf_idf.pkl', 'rb') as pickle_file:
@@ -42,6 +42,21 @@ with open(os.environ['ROOT_PATH'] + '/index_to_song.pkl', 'rb') as pickle_file:
 with open(os.environ['ROOT_PATH'] + '/vectorizer.pkl', 'rb') as pickle_file:
     vectorizer = pickle.load(pickle_file)
 
+with open(os.environ['ROOT_PATH'] + '/unique_tags.pkl', 'rb') as pickle_file:
+    unique_tags = pickle.load(pickle_file)
+
+with open(os.environ['ROOT_PATH'] + '/tag_to_index.pkl', 'rb') as pickle_file:
+    tag_to_index = pickle.load(pickle_file)
+
+with open(os.environ['ROOT_PATH'] + '/index_to_tag.pkl', 'rb') as pickle_file:
+    index_to_tag = pickle.load(pickle_file)
+
+with open(os.environ['ROOT_PATH'] + '/words_compressed.pkl', 'rb') as pickle_file:
+    words_compressed = pickle.load(pickle_file)
+
+with open(os.environ['ROOT_PATH'] + '/docs_compressed_normed.pkl', 'rb') as pickle_file:
+    docs_compressed_normed = pickle.load(pickle_file)
+
 with zipfile.ZipFile(os.environ['ROOT_PATH'] + '/dataset/big_df_edited.csv.zip', 'r') as zip_ref:
     zip_ref.extractall(os.environ['ROOT_PATH'] + '/dataset/')
 
@@ -57,28 +72,28 @@ big_df = pd.read_csv(os.environ['ROOT_PATH'] + '/dataset/big_df_edited.csv')
 big_df['emotions'] = big_df['emotions'].apply(ast.literal_eval)
 big_df['emotions'] = big_df['emotions'].apply(lambda x: [tup[0] for tup in x])
 
-unique_tags = set([j for sub in big_df['emotions'].values for j in sub])
-tag_to_index = {t:i for i, t in enumerate(unique_tags)}
-index_to_tag = {i:t for i, t in enumerate(unique_tags)}
+# unique_tags = set([j for sub in big_df['emotions'].values for j in sub])
+# tag_to_index = {t:i for i, t in enumerate(unique_tags)}
+# index_to_tag = {i:t for i, t in enumerate(unique_tags)}
 
-song_tag_mat = np.zeros((big_df.shape[0], len(unique_tags)))
-for i in range(big_df.shape[0]):
-    tags = big_df['emotions'].iloc[i]
-    for t in tags:
-        j = tag_to_index[t]
-        song_tag_mat[i, j] = 1
+# song_tag_mat = np.zeros((big_df.shape[0], len(unique_tags)))
+# for i in range(big_df.shape[0]):
+#     tags = big_df['emotions'].iloc[i]
+#     for t in tags:
+#         j = tag_to_index[t]
+#         song_tag_mat[i, j] = 1
 
-big_df['log_views'] = np.log(big_df['views'] + 1)
-big_df['norm_views'] = big_df['log_views'] / max(big_df['log_views'])
+# big_df['log_views'] = np.log(big_df['views'] + 1)
+# big_df['norm_views'] = big_df['log_views'] / max(big_df['log_views'])
 
-N_FEATS = 10
-docs_compressed, s, words_compressed = svds(song_tag_mat, k=N_FEATS)
-words_compressed = words_compressed.transpose()
-words_compressed_normed = normalize(words_compressed, axis = 1)
-docs_compressed_normed = normalize(docs_compressed, axis=1)
+# N_FEATS = 10
+# docs_compressed, s, words_compressed = svds(song_tag_mat, k=N_FEATS)
+# words_compressed = words_compressed.transpose()
+# words_compressed_normed = normalize(words_compressed, axis = 1)
+# docs_compressed_normed = normalize(docs_compressed, axis=1)
 
-td_matrix_np = song_tag_mat.transpose()
-td_matrix_np = normalize(td_matrix_np)
+# td_matrix_np = song_tag_mat.transpose()
+# td_matrix_np = normalize(td_matrix_np)
 
 def get_query_vec(query):
     query_tagf = np.zeros((1,len(unique_tags)))
@@ -151,8 +166,8 @@ def top_songs_query(city, query = "sad energetic"):
     
         pop = big_df['norm_views'].iloc[song_to_idx[song]] 
 
-        song_emot_vec = docs_compressed[song_to_idx[song], :]
-        emot_score = (query_vec @ song_emot_vec) * 10
+        song_emot_vec = docs_compressed_normed[song_to_idx[song], :]
+        emot_score = (query_vec @ song_emot_vec) 
                     
         score = (sim ** 2) * (pop) * (emot_score ** 2)
         best.append((song, sim, pop, emot_score, score))

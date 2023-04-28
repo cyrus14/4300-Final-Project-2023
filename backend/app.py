@@ -8,9 +8,9 @@ import helpers.query as apq
 import pickle
 from return_songs import find_nonzero_indices
 
-# https://spotipy.readthedocs.io/en/2.22.1/
-import spotipy
-from spotipy.oauth2 import SpotifyClientCredentials
+# # https://spotipy.readthedocs.io/en/2.22.1/
+# import spotipy
+# from spotipy.oauth2 import SpotifyClientCredentials
 
 
 # ROOT_PATH for linking with all your files.
@@ -57,8 +57,8 @@ def sql_search(episode):
 CLIENT_ID = CREDS['spotify_client']
 CLIENT_PRIVATE = CREDS['spotify_private']
 
-sp = spotipy.Spotify(
-    client_credentials_manager=SpotifyClientCredentials(CLIENT_ID, CLIENT_PRIVATE))
+# sp = spotipy.Spotify(
+#     client_credentials_manager=SpotifyClientCredentials(CLIENT_ID, CLIENT_PRIVATE))
 
 
 @app.route("/")
@@ -88,8 +88,8 @@ def my_link():
         spq = "track\:" + title + "%20artist\:" + artist + "%20year\:" + year
 
         # spotify query result
-        results = sp.search(spq, limit=1, type='track')
-        track = results['tracks']['items']
+        # results = sp.search(spq, limit=1, type='track')
+        # track = results['tracks']['items']
 
         key = item['title']
 
@@ -108,28 +108,28 @@ def my_link():
         print(content_integrated[key]['sim'])
         print(content_integrated[key]['pop'])
 
-        if (len(track) > 0 and ((item['title'].lower() in track[0]['name'].lower()) or (track[0]['artists'][0]['name'].lower() in item['artist'].lower()))):
-            track = track[0]
+        # if (len(track) > 0 and ((item['title'].lower() in track[0]['name'].lower()) or (track[0]['artists'][0]['name'].lower() in item['artist'].lower()))):
+        #     track = track[0]
 
-            for i in track['artists']:
-                content_integrated[key]['artists'].append(i['name'])
-                content_integrated[key]['artists_links'].append(i['uri'])
+        #     for i in track['artists']:
+        #         content_integrated[key]['artists'].append(i['name'])
+        #         content_integrated[key]['artists_links'].append(i['uri'])
 
-            content_integrated[key]['song'] = item['title']
-            content_integrated[key]['song_link'] = track['uri']
+        #     content_integrated[key]['song'] = item['title']
+        #     content_integrated[key]['song_link'] = track['uri']
 
-            content_integrated[key]['year'] = year
+        #     content_integrated[key]['year'] = year
 
-            content_integrated[key]['album_art'] = track['album']['images'][1]['url']
-            content_integrated[key]['album_link'] = track['album']['uri']
-        else:
-            # print(len(track))
-            # print(track)
+        #     content_integrated[key]['album_art'] = track['album']['images'][1]['url']
+        #     content_integrated[key]['album_link'] = track['album']['uri']
+        # else:
+        #     # print(len(track))
+        #     # print(track)
 
-            content_integrated[key]['artists'].append(item['artist'])
+        #     content_integrated[key]['artists'].append(item['artist'])
 
-            content_integrated[key]['song'] = item['title']
-            content_integrated[key]['year']
+        #     content_integrated[key]['song'] = item['title']
+        #     content_integrated[key]['year']
 
     '''
 
