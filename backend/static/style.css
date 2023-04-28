@@ -44,6 +44,17 @@ body{
     -webkit-text-fill-color: transparent;
 }
 
+.results-title {
+    color: #fff;
+    font-family: 'DM Sans' !important;
+}
+
+.results-expl {
+    color: #fff;
+    font-family: 'DM Sans' !important;
+}
+
+
 .title-colors{
     display: flex;
     align-items: center;
@@ -289,9 +300,16 @@ ul li {
     padding: 2em;
 }
 
-.card {
-    width: 60vw;
-    height: 20vh;
+.card-outer-flex {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.card-left-flex {
+    width: auto;
+    height: auto;
+
     background-color: #FFFFFF;
     border-radius: 10px;
     margin: 0.5em;
@@ -299,24 +317,15 @@ ul li {
     font-family: 'DM Sans', sans-serif;
     color: #262B40;
 
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-}
+    flex: 3;
 
-.card-holder {
-    margin: 2em;
     display: flex;
+    justify-content: left;
     align-items: center;
-    flex-direction: column;
-}
-
-.card-inner-flex{
-    display: flex;
     flex-direction: row;
 }
 
-.card-inner-flex .album {
+.card-left-flex .album {
     height: 16vh;
     width: 16vh;
     margin-left: 1em;
@@ -329,22 +338,63 @@ ul li {
     color: #262B40 !important;
 }
 
-.card-inner-flex .track {
+.card-left-flex .track {
     margin-left: 1em;
     padding: 0;
     margin-bottom: 0;
     justify-content: center;
 }
 
-.card-inner-flex .card-title {
+.card-left-flex .card-title {
     padding: 0;
     margin: 0;
 }
 
-.card-inner-flex .card-artists{
+.card-left-flex .card-artists{
     padding: 0;
     margin: 0;
 }
+
+.card-right-flex {
+    width: auto;
+    height: auto;
+
+    background: none !important;
+
+    font-family: 'DM Sans', sans-serif;
+    color: #efefef;
+
+    flex: 1;
+
+    display: flex;
+
+    margin-left: 1em;
+
+    justify-content: center !important;
+    text-align: center !important; 
+    flex-direction: column;
+}
+
+.card-holder {
+    margin: 2em;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.card-row {
+    width: 50vw;
+    height: 22vh;
+    margin: 0.5em;
+    font-family: 'DM Sans', sans-serif;
+    color: #262B40;
+    display: flex;
+    
+    justify-content: center;
+    flex-direction: row;
+}
+
+
 
 #loading-wheel {
     display: none; /* initially hide the loading wheel */

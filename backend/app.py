@@ -107,10 +107,10 @@ def my_link():
                                    'album_art': '',
                                    'album_link': '',
                                    'year': '',
-                                   'sim': item['sim'], 
-                                   'pop': item['pop'],
-                                   'emot': item['emot'],
-                                   'score': item['score']}
+                                   'sim': round(item['sim'] * 100.0, 2),
+                                   'pop': round(item['pop'] * 100.0, 2),
+                                   'emot': round(item['emot'][0] * 100.0, 2),
+                                   'score': round(item['score'][0] * 100.0, 2) }
         
 
         if (len(track) > 0 and ((item['title'].lower() in track[0]['name'].lower()) or (track[0]['artists'][0]['name'].lower() in item['artist'].lower()))):
@@ -193,7 +193,7 @@ def my_link():
 
     '''
 
-    return render_template('results.html', data=content_integrated, city=cityClean)
+    return render_template('results.html', data=content_integrated, city=cityClean, moods=moodsClean.replace(' ', ", "))
 
 
 app.run(debug=False)
