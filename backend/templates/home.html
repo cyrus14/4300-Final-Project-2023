@@ -87,19 +87,36 @@ home
       }
     }
 
+    function moodAggregator() {
+      let moods = ""
+
+      var selectedMoods = document.getElementsByClassName('select2-selection__choice');
+      
+      for (e of selectedMoods) {
+        moods = moods + e.getAttribute('title')
+      }
+
+      console.log(moods)
+
+      return moods
+    }
+
     function myFunction() {
       var city = document.getElementById("city").value
 
-      var moods = ""
+      let moods = ""
 
-      console.log('hello');
-
-      var selectedMoods = document.getElementsByClassName('select2-selection__rendered');
+      var selectedMoods = document.getElementsByClassName('select2-selection__choice');
       
-      
-      console.log(selectedMoods);
+      for (e of selectedMoods) {
+        var attr = e.getAttribute('title')
+        
+        moods = moods + e.getAttribute('title')
+      }
 
-      window.location.href = '/results?key=' + city
+      console.log(moods)
+
+      window.location.href = '/results?key=' + city + '&mood=' + moods
 
     }
 
