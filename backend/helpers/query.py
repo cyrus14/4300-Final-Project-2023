@@ -187,4 +187,5 @@ def top_songs_query(city, query = "sad energetic"):
 
     return returned
 
-# top_songs_query("New York City")
+# print(top_songs_query("New York City"))
+print(list(unique_tags))
