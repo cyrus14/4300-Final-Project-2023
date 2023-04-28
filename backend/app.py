@@ -69,10 +69,17 @@ def home():
 @app.route('/results')
 def my_link():
     current_url = request.url
-    city = current_url[current_url.index('key=') + 4:]
-    cityClean = city.replace('_', ' ')
 
-    content = apq.top_songs_query(cityClean)
+    urlQuery = current_url[current_url.index('?') + 1:]
+    urlQuerySplit = urlQuery.split('&');
+
+    cityRaw = urlQuerySplit[0]
+    moodsRaw = urlQuerySplit[1]
+
+    cityClean = cityRaw.replace("key=", "").replace('_', ' ')
+    moodsClean = moodsRaw.replace("moods=", "").replace('_', ' ')
+
+    content = apq.top_songs_query(cityClean, query=moodsClean)
 
     content_integrated = {}
 

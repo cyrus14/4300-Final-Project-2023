@@ -352,7 +352,7 @@ ul li {
     height: 50px;
     border-radius: 50%;
     border: 5px solid rgba(0, 0, 0, 0.1);
-    border-top-color: #3498db; /* choose a color for the loading wheel */
+    border-top-color: #b447fc; /* choose a color for the loading wheel */
     animation: spin 1s infinite linear;
   }
   
