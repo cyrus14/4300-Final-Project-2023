@@ -87,12 +87,12 @@ def my_link():
     # this STILL needs to be heavily refined
 
     for item in content:
-        title = item['title'].lower().replace(' ', '%20')
-        artist = item['artist'].lower().replace(' ', '%20')
+        # title = item['title'].lower().replace(' ', '%20')
+        # artist = item['artist'].lower().replace(' ', '%20')
         year = str(item['year'])
 
         # spotify query construction
-        spq = "track\:" + title + "%20artist\:" + artist + "%20year\:" + year
+        spq = "track\:" + item['title'] + "%20artist\:" + item['artist'] + "%20year\:" + year
 
         # spotify query result
         results = sp.search(spq, limit=1, type='track')

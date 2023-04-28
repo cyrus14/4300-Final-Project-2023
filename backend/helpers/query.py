@@ -169,7 +169,7 @@ def top_songs_query(city, query = "sad energetic"):
         song_emot_vec = docs_compressed_normed[song_to_idx[song], :]
         emot_score = (query_vec @ song_emot_vec) 
                     
-        score = (sim ** 2) * (pop) * (emot_score)
+        score = (sim ** 2) + (pop / 5) + ((emot_score) / 10)
         best.append((song, sim, pop, emot_score, score))
     srtd = sorted(best, key=lambda x: x[-1], reverse=True)
     for t in srtd[:10]:
