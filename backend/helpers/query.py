@@ -21,7 +21,7 @@ os.environ['ROOT_PATH'] = root_path
 
 # unpickle wiki_tf_idf (vec2)
 with open(os.environ['ROOT_PATH']  + '/wiki_tf_idf.pkl', 'rb') as pickle_file:
-    wiki_tfidf = pickle.load(pickle_file).toarray()
+    wiki_tfidf = pickle.load(pickle_file)#.toarray()
 
 # unpickle song_tf_idf (X)
 with open(os.environ['ROOT_PATH'] + '/song_tf_idf.pkl', 'rb') as pickle_file:
@@ -50,6 +50,12 @@ with open(os.environ['ROOT_PATH'] + '/tag_to_index.pkl', 'rb') as pickle_file:
 
 with open(os.environ['ROOT_PATH'] + '/index_to_tag.pkl', 'rb') as pickle_file:
     index_to_tag = pickle.load(pickle_file)
+
+with open(os.environ['ROOT_PATH'] + '/index_to_word.pkl', 'rb') as pickle_file:
+    index_to_word = pickle.load(pickle_file)
+
+with open(os.environ['ROOT_PATH'] + '/word_to_index.pkl', 'rb') as pickle_file:
+    word_to_index = pickle.load(pickle_file)
 
 with open(os.environ['ROOT_PATH'] + '/words_compressed.pkl', 'rb') as pickle_file:
     words_compressed = pickle.load(pickle_file)
@@ -167,8 +173,7 @@ def top_songs_query(city, query = "sad energetic"):
         pop = big_df['norm_views'].iloc[song_to_idx[song]] 
 
         song_emot_vec = docs_compressed_normed[song_to_idx[song], :]
-        emot_score = (query_vec @ song_emot_vec) 
-                    
+        emot_score = np.exp(query_vec @ song_emot_vec)/np.e
         score = (sim ** 2) + (pop / 5) + ((emot_score) / 10)
         best.append((song, sim, pop, emot_score, score))
     srtd = sorted(best, key=lambda x: x[-1], reverse=True)
@@ -182,7 +187,14 @@ def top_songs_query(city, query = "sad energetic"):
                   'pop':t[2],
                   'emot': t[3],
                   'score': t[-1]}
-
+        prod = song_tfidf[song_to_idx[retrieved['title']]] * wiki_tfidf[loc_to_idx[city]]
+        strongest = np.argsort(prod)[-10:]
+        strongest_words = [index_to_word[w] for w in strongest]
+        print(retrieved['title'])
+        print(strongest_words)
+        result['best_words'] = strongest_words
+        result['score_in_song'] = song_tfidf[song_to_idx[retrieved['title']],strongest]
+        result['score_in_city'] = wiki_tfidf[loc_to_idx[city],strongest]
         returned.append(result)
 
     return returned
