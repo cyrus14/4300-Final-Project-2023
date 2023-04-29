@@ -9,7 +9,6 @@ import ast
 from scipy.sparse.linalg import svds
 from sklearn.preprocessing import normalize
 
-
 # from app import wiki_tfidf, song_tfidf, loc_to_idx, song_to_idx, idx_to_song, big_df
 
 # PICKLE :)
@@ -163,6 +162,7 @@ def top_songs_query(city, query = "sad energetic"):
     best = []
     returned = []
     # query_emot_vec = closest_songs_to_query(query, k=10)
+
     query_vec = get_query_vec(query)
     for song in song_to_idx:
         sim = cos_sim(city, song)
@@ -174,7 +174,9 @@ def top_songs_query(city, query = "sad energetic"):
 
         song_emot_vec = docs_compressed_normed[song_to_idx[song], :]
         emot_score = np.exp(query_vec @ song_emot_vec)/np.e
-        score = (sim ** 2) + (pop / 5) + ((emot_score) / 10)
+        # score = (sim ** 2) + (pop / 5) + ((emot_score) / 10)
+        score = (sim + 1) * (pop + 1) * (emot_score + 1) / 6
+
         best.append((song, sim, pop, emot_score, score))
     srtd = sorted(best, key=lambda x: x[-1], reverse=True)
     for t in srtd[:10]:
