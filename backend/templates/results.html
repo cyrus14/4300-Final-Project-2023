@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %} 
+{% block title %}
 results
 {% endblock %}
 
@@ -8,51 +8,103 @@ results
 
 <body>
     <div class="main"></div>
-        <div class="full-body-container-2">
+    <div class="full-body-container-2">
+        <script src="https://d3js.org/d3.v4.js"></script>
 
-            <div class="header">
-                <a href="/"><span class="back">(⇐ back)</span></a>
-                <h1 class="results-title">welcome to <span style="color: #b447fc !important;">{{ city }}</span>! here's your playlist...</h1>
-                <h2 class="results-expl">this playlist is <span style="color: #b447fc !important;">{{ moods }}</span></h3>
-            </div>
 
-            <div class='card-holder'>
-                {% for item in data %}
-                    <div class='card-row'>
-                        <div class='card-left-flex'>
-                            {% if data[item]['album_art'] == '' %}
-                            <img class='album' src="{{ url_for('static', filename='images/placeholder-01.jpg') }}" alt='album art' />
+        <div class="header">
+            <a href="/"><span class="back">(⇐ back)</span></a>
+            <h1 class="results-title">welcome to <span style="color: #b447fc !important;">{{ city }}</span>! here's your
+                playlist...</h1>
+            <h2 class="results-expl">this playlist is <span style="color: #b447fc !important;">{{ moods }}</span></h3>
+        </div>
+
+        <div class='card-holder'>
+            {% for item in data %}
+            <div class='card-row'>
+                <div class='card-left-flex'>
+                    {% if data[item]['album_art'] == '' %}
+                    <img class='album' src="{{ url_for('static', filename='images/placeholder-01.jpg') }}"
+                        alt='album art' />
+                    {% else %}
+                    <img class='album' src="{{ data[item]['album_art'] }}" alt='album art'></img>
+                    {% endif %}
+                    <div class='track'>
+                        {% if data[item]['song_link'] == '' %}
+                        <h1 class='card-title'>{{ data[item]['song'] }}</h1>
+                        {% else %}
+                        <h1 class='card-title'><a href="{{ data[item]['song_link'] }}">{{ data[item]['song'] }}</a></h1>
+                        {% endif %}
+                        <h3 class='card-artists'>
+                            {% if data[item][artists]|length == 1 %}
+                            {{ artist }}
                             {% else %}
-                            <img class='album' src="{{ data[item]['album_art'] }}" alt='album art'></img>
+                            {% for artist in data[item]['artists'] %}
+                            {{ artist }},
+                            {% endfor %}
                             {% endif %}
-                            <div class='track'>
-                                {% if data[item]['song_link'] == '' %}
-                                <h1 class='card-title'>{{ data[item]['song'] }}</h1>
-                                {% else %}
-                                <h1 class='card-title'><a href="{{ data[item]['song_link'] }}">{{ data[item]['song'] }}</a></h1>
-                                {% endif %}
-                                <h3 class='card-artists'>
-                                    {% if data[item][artists]|length == 1 %}
-                                    {{ artist }}
-                                    {% else %}
-                                        {% for artist in data[item]['artists'] %}
-                                        {{ artist }},
-                                        {% endfor %}
-                                    {% endif %}
-                                </h3>
-                            </div>
-                        </div>
-                        <div class='card-right-flex'>
-                            <span><i class="bi bi-geo-alt"></i> {{ data[item]['sim'] }}%</span> <br>
-                            <span><i class="bi bi-graph-up-arrow"></i> {{ data[item]['pop'] }}%</span> <br>
-                            <span><i class="bi bi-emoji-smile"></i> {{ data[item]['emot'] }}%</span> <br>
-                            <span style="color: #b447fc"><i class="bi bi-check2-circle"></i> {{ data[item]['score'] }}%</span>
-                        </div>
+                        </h3>
                     </div>
-                {% endfor %}
+                    <div class="Area"> </div>
+                </div>
+                <div class='card-right-flex'>
+                    <span><i class="bi bi-geo-alt"></i> {{ data[item]['sim'] }}%</span> <br>
+                    <span><i class="bi bi-graph-up-arrow"></i> {{ data[item]['pop'] }}%</span> <br>
+                    <span><i class="bi bi-emoji-smile"></i> {{ data[item]['emot'] }}%</span> <br>
+                    <span style="color: #b447fc"><i class="bi bi-check2-circle"></i> {{ data[item]['score'] }}%</span>
+                </div>
+
+                <!-- Load d3.js -->
+
+
             </div>
 
-            <!--
+
+            {% endfor %}
+        </div>
+
+        <script>
+            const areas = document.getElementsByClassName('Area');
+
+            for (let i = 0; i < areas.length; i++) areas[i].setAttribute('id', i + 1);
+
+            for (let i = 0; i < areas.length; i++) {
+                // set the dimensions and margins of the graph
+                console.log(area);
+                var margin = { top: 10, right: 40, bottom: 30, left: 30 },
+                    width = 50 - margin.left - margin.right,
+                    height = 50 - margin.top - margin.bottom;
+
+                // append the svg object to the body of the page
+                var sVg = d3.select("#" + String(i + 1))
+                    .append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                    // translate this svg element to leave some margin.
+                    .append("g")
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                console.log(area);
+                // X scale and Axis
+                var x = d3.scaleLinear()
+                    .domain([0, 100])         // This is the min and the max of the data: 0 to 100 if percentages
+                    .range([0, width]);       // This is the corresponding value I want in Pixel
+                sVg
+                    .append('g')
+                    .attr("transform", "translate(0," + height + ")")
+                    .call(d3.axisBottom(x));
+
+                // X scale and Axis
+                var y = d3.scaleLinear()
+                    .domain([0, 100])         // This is the min and the max of the data: 0 to 100 if percentages
+                    .range([height, 0]);       // This is the corresponding value I want in Pixel
+                sVg
+                    .append('g')
+                    .call(d3.axisLeft(y));
+            }
+
+        </script>
+
+        <!--
 
 
             <div class="card-holder">
@@ -96,8 +148,8 @@ results
             </div>
 
             -->
-            
-        </div>
+
+    </div>
 
     </div>
 </body>

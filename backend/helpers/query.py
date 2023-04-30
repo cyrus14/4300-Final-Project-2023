@@ -8,7 +8,7 @@ import zipfile
 import ast
 from scipy.sparse.linalg import svds
 from sklearn.preprocessing import normalize
-
+import random
 
 # from app import wiki_tfidf, song_tfidf, loc_to_idx, song_to_idx, idx_to_song, big_df
 
@@ -21,7 +21,7 @@ os.environ['ROOT_PATH'] = root_path
 
 # unpickle wiki_tf_idf (vec2)
 with open(os.environ['ROOT_PATH']  + '/wiki_tf_idf.pkl', 'rb') as pickle_file:
-    wiki_tfidf = pickle.load(pickle_file).toarray()
+    wiki_tfidf = pickle.load(pickle_file)#.toarray()
 
 # unpickle song_tf_idf (X)
 with open(os.environ['ROOT_PATH'] + '/song_tf_idf.pkl', 'rb') as pickle_file:
@@ -50,6 +50,12 @@ with open(os.environ['ROOT_PATH'] + '/tag_to_index.pkl', 'rb') as pickle_file:
 
 with open(os.environ['ROOT_PATH'] + '/index_to_tag.pkl', 'rb') as pickle_file:
     index_to_tag = pickle.load(pickle_file)
+
+with open(os.environ['ROOT_PATH'] + '/index_to_word.pkl', 'rb') as pickle_file:
+    index_to_word = pickle.load(pickle_file)
+
+with open(os.environ['ROOT_PATH'] + '/word_to_index.pkl', 'rb') as pickle_file:
+    word_to_index = pickle.load(pickle_file)
 
 with open(os.environ['ROOT_PATH'] + '/words_compressed.pkl', 'rb') as pickle_file:
     words_compressed = pickle.load(pickle_file)
@@ -154,23 +160,28 @@ def cos_sim(city, song):
     return (num + 0.5) / (denom + 0.5)
 
 def top_songs_query(city, query = "sad energetic"):
+    print("\nSTART\n")
     best = []
     returned = []
     # query_emot_vec = closest_songs_to_query(query, k=10)
-    query_vec = get_query_vec(query)
-    for song in song_to_idx:
-        sim = cos_sim(city, song)
 
+    query_vec = get_query_vec(query)
+    all_songs = list(song_to_idx.keys())
+    random.shuffle(all_songs)
+    for song in all_songs[:4000]:
+        sim = cos_sim(city, song)
         if sim == 1.0:
             sim = 0
     
         pop = big_df['norm_views'].iloc[song_to_idx[song]] 
 
         song_emot_vec = docs_compressed_normed[song_to_idx[song], :]
-        emot_score = (query_vec @ song_emot_vec) 
-                    
-        score = (sim ** 2) + (pop / 5) + ((emot_score) / 10)
+        emot_score = np.exp(query_vec @ song_emot_vec)/np.e
+        # score = (sim ** 2) + (pop / 5) + ((emot_score) / 10)
+        score = (sim + 1) * (pop + 1) * (emot_score + 1) / 6
+
         best.append((song, sim, pop, emot_score, score))
+    print("\n2\n")
     srtd = sorted(best, key=lambda x: x[-1], reverse=True)
     for t in srtd[:10]:
         retrieved = big_df.iloc[song_to_idx[t[0]]]
@@ -182,9 +193,16 @@ def top_songs_query(city, query = "sad energetic"):
                   'pop':t[2],
                   'emot': t[3],
                   'score': t[-1]}
-
+        prod = song_tfidf[song_to_idx[retrieved['title']]] * wiki_tfidf[loc_to_idx[city]]
+        strongest = np.argsort(prod)[-10:]
+        strongest_words = [index_to_word[w] for w in strongest]
+        print(retrieved['title'])
+        print(strongest_words)
+        result['best_words'] = strongest_words
+        result['score_in_song'] = song_tfidf[song_to_idx[retrieved['title']],strongest]
+        result['score_in_city'] = wiki_tfidf[loc_to_idx[city],strongest]
         returned.append(result)
-
+    print("END QUERY")
     return returned
 
 # print(top_songs_query("New York City"))
