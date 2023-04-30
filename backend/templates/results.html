@@ -34,6 +34,8 @@ results
                         <h1 class='card-title'>{{ data[item]['song'] }}</h1>
                         {% else %}
                         <h1 class='card-title'><a href="{{ data[item]['song_link'] }}">{{ data[item]['song'] }}</a></h1>
+
+
                         {% endif %}
                         <h3 class='card-artists'>
                             {% if data[item][artists]|length == 1 %}
@@ -43,7 +45,13 @@ results
                             {{ artist }},
                             {% endfor %}
                             {% endif %}
+                            {% if data[item]['song_link'] != '' %}
+                            <br>
+                            <a href="{{ data[item]['song_link'] }}"> <img class="play"
+                                    src="{{ url_for('static', filename='images/play2.svg') }}" alt="Play Button"> </a>
+                            {% endif %}
                         </h3>
+
                     </div>
                     <div class="Area"> </div>
                 </div>
