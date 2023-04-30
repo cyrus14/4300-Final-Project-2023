@@ -47,11 +47,15 @@ body{
 .results-title {
     color: #fff;
     font-family: 'DM Sans' !important;
+    padding: 0;
+    margin: 0;
 }
 
 .results-expl {
     color: #fff;
     font-family: 'DM Sans' !important;
+    padding: 0;
+    margin: 0;
 }
 
 
