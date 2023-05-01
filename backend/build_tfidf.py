@@ -9,7 +9,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_extraction import text
 from dataset import wiki_scraping
 
-my_stop_words = text.ENGLISH_STOP_WORDS.union({'city', 'like', 'zwischen'})
+my_stop_words = text.ENGLISH_STOP_WORDS.union(
+    {'city', 'like', 'zwischen', 'just', 'let'})
 
 
 f = open('dataset/wiki_scraping/wiki_texts.json')
