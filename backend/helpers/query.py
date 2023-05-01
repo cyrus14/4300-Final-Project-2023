@@ -170,7 +170,8 @@ def top_songs_query(city, query = "sad energetic"):
                   'sim': t[1],
                   'pop':t[2],
                   'emot': t[3],
-                  'score': t[-1]}
+                  'score': t[-1], 
+                  'id': song_to_idx[retrieved['title']]}
         prod = song_tfidf[song_to_idx[retrieved['title']]] * wiki_tfidf[loc_to_idx[city]]
         strongest = np.argsort(prod)[-10:]
         strongest_words = [index_to_word[w] for w in strongest]
