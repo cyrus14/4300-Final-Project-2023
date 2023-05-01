@@ -168,7 +168,7 @@ def top_songs_query(city, query = "sad energetic"):
     query_vec = get_query_vec(query)
     all_songs = list(song_to_idx.keys())
     random.shuffle(all_songs)
-    for song in all_songs[:4000]:
+    for song in all_songs:#[:4000]:
         sim = cos_sim(city, song)
         if sim == 1.0:
             sim = 0
