@@ -19,13 +19,54 @@ home
 
       <select class="city-select" id="city">
         <option value="New_York_City">New York City, USA</option>
-        <option value="London">London, UK</option>
-        <option value="Mumbai">Mumbai, IND</option>
-        <option value="Toronto">Toronto, CAN</option>
-        <option value="Tokyo">Tokyo, JPN</option>
+        <option value="Budapest">Budapest, HUN</option>
+        <option value="Ithaca">Ithaca, USA</option>
+        <option value="Miami">Miami, USA</option>
+        <option value="Los_Angeles">Los Angeles, USA</option>
+        <option value="Chicago">Chicago, USA</option>
+        <option value="Houston">Houston, USA</option>
+        <option value="Phoenix">Phoenix, USA</option>
+        <option value="Philadelphia">Philadelphia, USA</option>
+        <option value="San_Antonio">San Antonio, USA</option>
+        <option value="San_Diego">San Diego, USA</option>
+        <option value="Dallas">Dallas, USA</option>
+        <option value="San_Jose">San Jose, USA</option>
+        <option value="Austin">Austin, USA</option>
+        <option value="San_Francisco">San Francisco, USA</option>
+        <option value="Seattle">Seattle, USA</option>
+        <option value="Denver">Denver, USA</option>
+        <option value="Nashville">Nashville, USA</option>
+        <option value="Washington">Washington, USA</option>
+        <option value="Oklahoma_City">Oklahoma City, USA</option>
+        <option value="Boston">Boston, USA</option>
+        <option value="Las_Vegas">Las Vegas, USA</option>
+        <option value="Memphis">Memphis, USA</option>
+        <option value="Detroit">Detroit, USA</option>
+        <option value="Baltimore">Baltimore, USA</option>
         <option value="Tel_Aviv">Tel Aviv, IS</option>
+        <option value="Jerusalem">Jerusalem, IS</option>
         <option value="Seoul">Seoul, KOR</option>
+        <option value="New_Orleans">New Orleans, USA</option>
+        <option value="Paris">Paris, FRA</option>
+        <option value="Tokyo">Tokyo, JPN</option>
+        <option value="Delhi">Delhi, IND</option>
+        <option value="Shanghai">Shanghai, CHN</option>
+        <option value="Mexico_City">Mexico City, MEX</option>
+        <option value="Cairo">Cairo, EGY</option>
+        <option value="Mumbai">Mumbai, IND</option>
+        <option value="Beijing">Beijing, CHN</option>
+        <option value="Osaka">Osaka, JPN</option>
+        <option value="Buenos_Aires">Buenos Aires, ARG</option>
+        <option value="Istanbul">Istanbul, TUR</option>
+        <option value="Guangzhou">Guangzhou, CHN</option>
+        <option value="Bangkok">Bangkok, THA</option>
+        <option value="London">London, UK</option>
+        <option value="Hong_Kong">Hong Kong, HKG</option>
+        <option value="Madrid">Madrid, ESP</option>
+        <option value="Toronto">Toronto, CAN</option>
+        <option value="Atlanta">Atlanta, USA</option>
       </select>
+      
 
       <div class="spacer"></div>
 
@@ -42,6 +83,53 @@ home
       <div id="loading-wheel"></div>
 
   </div>
+
+  <script>
+    function matchStart(params, data) {
+      // If there are no search terms, return all of the data
+      if ($.trim(params.term) === '') {
+        return data;
+      }
+
+      // Skip if there is no 'children' property
+      if (typeof data.children === 'undefined') {
+        return null;
+      }
+
+      // `data.children` contains the actual options that we are matching against
+      var filteredChildren = [];
+      $.each(data.children, function (idx, child) {
+        if (child.text.toUpperCase().indexOf(params.term.toUpperCase()) == 0) {
+          filteredChildren.push(child);
+        }
+      });
+
+      // If we matched any of the timezone group's children, then set the matched children on the group
+      // and return the group object
+      if (filteredChildren.length) {
+        var modifiedData = $.extend({}, data, true);
+        modifiedData.children = filteredChildren;
+
+        // You can return modified objects from here
+        // This includes matching the `children` how you want in nested data sets
+        return modifiedData;
+      }
+
+      // Return `null` if the term should not be displayed
+      return null;
+    }
+
+    $(document).ready(function() {
+  $('.city-select').select2({
+    minimumInputLength: 0,
+    placeholder: 'Select an option',
+    width: '250px', // set the dropdown width to 100% of the parent element
+    selectOnFocus: true
+  });
+});
+
+    
+  </script>
 
 
 
