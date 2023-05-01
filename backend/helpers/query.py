@@ -165,21 +165,26 @@ def top_songs_query(city, query = "sad energetic"):
         retrieved = big_df.iloc[song_to_idx[t[0]]]
         result = {'title': retrieved['title'],
                   'artist': retrieved['artist'],
-                  'year': retrieved['year'],
-                  'views': retrieved['views'],
-                  'sim': t[1],
-                  'pop':t[2],
-                  'emot': t[3],
-                  'score': t[-1], 
-                  'id': song_to_idx[retrieved['title']]}
+                  'year': int(retrieved['year']),
+                  'views': int(retrieved['views']),
+                  'sim': float(t[1]),
+                  'pop': float(t[2]),
+                  'emot': float(t[3][0]),
+                  'score': float(t[-1][0]), 
+                  'id': int(song_to_idx[retrieved['title']])}
         prod = song_tfidf[song_to_idx[retrieved['title']]] * wiki_tfidf[loc_to_idx[city]]
         strongest = np.argsort(prod)[-10:]
         strongest_words = [index_to_word[w] for w in strongest]
         print(retrieved['title'])
         print(strongest_words)
         result['best_words'] = strongest_words
-        result['score_in_song'] = song_tfidf[song_to_idx[retrieved['title']],strongest]
-        result['score_in_city'] = wiki_tfidf[loc_to_idx[city],strongest]
+        result['score_in_song'] = list(song_tfidf[song_to_idx[retrieved['title']],strongest])
+        result['score_in_city'] = list(wiki_tfidf[loc_to_idx[city],strongest])
+
+        print(result['score_in_song'], type(result['score_in_song']))
+        print(result['score_in_city'], type(result['score_in_city']))
+        print(result['id'], type(result['id']))
+
         returned.append(result)
     print("END QUERY")
     return returned
