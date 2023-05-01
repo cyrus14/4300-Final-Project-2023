@@ -9,11 +9,9 @@ import ast
 from scipy.sparse.linalg import svds
 from sklearn.preprocessing import normalize
 import random
-
-# from app import wiki_tfidf, song_tfidf, loc_to_idx, song_to_idx, idx_to_song, big_df
+from collections import Counter
 
 # PICKLE :)
-
 
 root_path = os.path.abspath(os.curdir)
 os.environ['ROOT_PATH'] = root_path
@@ -63,43 +61,25 @@ with open(os.environ['ROOT_PATH'] + '/words_compressed.pkl', 'rb') as pickle_fil
 with open(os.environ['ROOT_PATH'] + '/docs_compressed_normed.pkl', 'rb') as pickle_file:
     docs_compressed_normed = pickle.load(pickle_file)
 
+with open(os.environ['ROOT_PATH'] + '/song_inv_idx.pkl', 'rb') as pickle_file:
+    song_inv_idx = pickle.load(pickle_file)
+
+with open(os.environ['ROOT_PATH'] + '/idf.pkl', 'rb') as pickle_file:
+    idf = pickle.load(pickle_file)
+
+with open(os.environ['ROOT_PATH'] + '/norms.pkl', 'rb') as pickle_file:
+    norms = pickle.load(pickle_file)
+
+f = open('dataset/wiki_scraping/wiki_texts.json')
+wiki_texts = json.load(f)
+
 with zipfile.ZipFile(os.environ['ROOT_PATH'] + '/dataset/big_df_edited.csv.zip', 'r') as zip_ref:
     zip_ref.extractall(os.environ['ROOT_PATH'] + '/dataset/')
-
-# read in "edited" csv (shortened)
-# items = os.listdir(root_path)
-
-# for item in items:
-#     print(item)
-
 
 big_df = pd.read_csv(os.environ['ROOT_PATH'] + '/dataset/big_df_edited.csv')
 
 big_df['emotions'] = big_df['emotions'].apply(ast.literal_eval)
 big_df['emotions'] = big_df['emotions'].apply(lambda x: [tup[0] for tup in x])
-
-# unique_tags = set([j for sub in big_df['emotions'].values for j in sub])
-# tag_to_index = {t:i for i, t in enumerate(unique_tags)}
-# index_to_tag = {i:t for i, t in enumerate(unique_tags)}
-
-# song_tag_mat = np.zeros((big_df.shape[0], len(unique_tags)))
-# for i in range(big_df.shape[0]):
-#     tags = big_df['emotions'].iloc[i]
-#     for t in tags:
-#         j = tag_to_index[t]
-#         song_tag_mat[i, j] = 1
-
-# big_df['log_views'] = np.log(big_df['views'] + 1)
-# big_df['norm_views'] = big_df['log_views'] / max(big_df['log_views'])
-
-# N_FEATS = 10
-# docs_compressed, s, words_compressed = svds(song_tag_mat, k=N_FEATS)
-# words_compressed = words_compressed.transpose()
-# words_compressed_normed = normalize(words_compressed, axis = 1)
-# docs_compressed_normed = normalize(docs_compressed, axis=1)
-
-# td_matrix_np = song_tag_mat.transpose()
-# td_matrix_np = normalize(td_matrix_np)
 
 def get_query_vec(query):
     query_tagf = np.zeros((1,len(unique_tags)))
@@ -120,56 +100,54 @@ def closest_songs_to_query(query, k = 5):
               'sim':sims[i], 
               'score':sims[i]} for i in asort[0:]]
 
-
-'''
-# unpickle wiki_tf_idf (vec2)
-with open('wiki_tf_idf.pkl', 'rb') as pickle_file:
-    wiki_tfidf = pickle.load(pickle_file)
-
-# unpickle song_tf_idf (X)
-with open('song_tf_idf.pkl', 'rb') as pickle_file:
-    song_tfidf = pickle.load(pickle_file)
-
-# unpickle loc_to_index
-with open('loc_to_index.pkl', 'rb') as pickle_file:
-    loc_to_idx = pickle.load(pickle_file)
-
-# unpickle song_to_index
-with open('song_to_index.pkl', 'rb') as pickle_file:
-    song_to_idx = pickle.load(pickle_file)
-
-# unpickle index_to_song
-with open('index_to_song.pkl', 'rb') as pickle_file:
-    idx_to_song = pickle.load(pickle_file)
-
-# read in "edited" csv (shortened)
-big_df = pd.read_csv('dataset/big_df_edited.csv')
-'''
-
 def test():
     print('hello')
 
-# cosine similarity function
-def cos_sim(city, song):
-    city_i = loc_to_idx[city]
-    song_i = song_to_idx[song]
-    city_vec = wiki_tfidf[city_i, :]
-    song_vec = song_tfidf[song_i, :]
-    denom = np.linalg.norm(city_vec) * np.linalg.norm(song_vec)
-    num = city_vec @ song_vec
-    return (num + 0.5) / (denom + 0.5)
+def accumulate_dot_scores(query_word_counts, inv_idx, idf):
+    doc_scores = {}
+    for wrd in query_word_counts:
+        idf_i = 0
+        if wrd in idf:
+            idf_i = idf[wrd]
+        qi = query_word_counts[wrd] * idf_i
+        if wrd in inv_idx:
+            for tup in inv_idx[wrd]:
+                docid = tup[0]
+                dij = tup[1] * idf[wrd]
+                this_dot = dij * qi
+                if docid in doc_scores:
+                    doc_scores[docid] += this_dot
+                else:
+                    doc_scores[docid] = this_dot
+    return doc_scores
+
+def get_city_query_and_scores(city):
+    q_dict = Counter(wiki_texts[city])
+    q_norm = 0
+    for wrd in q_dict:
+        idf_i = 0
+        if wrd in idf:
+            idf_i =  idf[wrd]
+        q_norm += (idf_i * q_dict[wrd]) ** 2
+    q_norm = np.sqrt(q_norm)
+    dot_scores = accumulate_dot_scores(q_dict, song_inv_idx, idf)
+    return q_norm, dot_scores
 
 def top_songs_query(city, query = "sad energetic"):
     print("\nSTART\n")
     best = []
     returned = []
-    # query_emot_vec = closest_songs_to_query(query, k=10)
-
     query_vec = get_query_vec(query)
-    all_songs = list(song_to_idx.keys())
-    random.shuffle(all_songs)
-    for song in all_songs:#[:4000]:
-        sim = cos_sim(city, song)
+    q_norm, dot_scores = get_city_query_and_scores(city)
+
+    for i, song in enumerate(song_to_idx.keys()):
+        num = 0
+        if i in dot_scores:
+            num = dot_scores[i]
+        sim = 0
+        if norms[i]!=0:
+            sim = num / (q_norm*norms[i])
+
         if sim == 1.0:
             sim = 0
     
