@@ -130,6 +130,7 @@ body {
     background-color: #fff;
     margin-top: 1em;
     text-align: center;
+    font-family: 'DM Sans', sans-serif;
 }
 
 .city-select:focus {
@@ -156,17 +157,20 @@ body {
 }
 
 .select2--container {
-    font-family: 'DM Sans' !important;
+    font-family: 'DM Sans', sans-serif !important;
 }
 
 .select2-results__option {
     color: #444;
+    font-family: 'DM Sans', sans-serif;
 }
+
+
 
 .select2-container--open .select2-dropdown--below,
 .select2-container--open .select2-dropdown--above {
     background: #fff !important;
-    font-family: 'DM Sans' !important;
+    font-family: 'DM Sans', sans-serif !important;
 }
 
 .select2-results__option--highlighted[aria-selected] {
@@ -177,22 +181,26 @@ body {
 .select2-selection {
     padding: 1px;
     margin: 4px 0px 0px 0;
-    font-family: 'DM Sans' !important;
+    font-family: 'DM Sans', sans-serif !important;
+    height: 30px;
 }
 
 .select2-selection__choice {
     background: linear-gradient(to right, #b447fc, #db29ff) !important;
     color: #fff !important;
     border-radius: 0px;
+    font-family: 'DM Sans', sans-serif;
 }
 
 .select2-selection__choice__remove {
     color: #fff !important;
     border-right-color: white !important;
+    font-family: 'DM Sans', sans-serif;
 }
 
 .select2-selection__choice__display {
     padding-left: 5px !important;
+    font-family: 'DM Sans', sans-serif;
 }
 
 .generate-playlist-btn {
@@ -456,3 +464,10 @@ ul li {
 }
 
 */
+
+.select2-container--default .select2-selection--single {
+    background-color: #fff;
+    border: 1px solid #aaa;
+    height: 32px;
+    border-radius: 4px;
+}
