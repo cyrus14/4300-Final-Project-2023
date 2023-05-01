@@ -26,3 +26,5 @@ helpers/*
 backend/.cache/
 
 backend/.cache
+
+.vscode/
