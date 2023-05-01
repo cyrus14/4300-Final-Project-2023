@@ -136,64 +136,24 @@ def my_link():
             content_integrated[key]['song'] = item['title']
             content_integrated[key]['year']
 
-    '''
-
-    content = find_nonzero_indices(cityClean)
-
-    content_integrated = {}
-
-    # spotify integration
-    # Note: this needs to be HEAVILY refined
-
-    for song in content:
-        q = ""
-
-        title = song[0].lower().replace(' ', '%20')
-        artist = song[1].lower().replace(' ', '%20')
-        year = str(song[2])
-
-        q = "track\:" + title + "%20artist\:" + artist + "%20year\:" + year
-        
-        result = sp.search(q, limit=1, type='track')
-        track = result['tracks']['items']
-
-        key = song[0]
-
-        content_integrated[key] = {'song': '', 'song_link': '', 'artists': [], 'artists_links': [], 'album_art': '', 'album_link': '', 'year': ''}
-
-        if (len(track) > 0) and ((song[0].lower() in track[0]['name'].lower()) or (track[0]['artists'][0]['name'].lower() in song[1].lower())):
-            track = track[0]
-
-            # album art, album link, song name, song link, artists, artists links, year
-
-            # get artist(s)
-            for i in track['artists']:
-                content_integrated[key]['artists'].append(i['name'])
-                content_integrated[key]['artists_links'].append(i['uri'])
-
-            # get song name & link
-            content_integrated[key]['song'] = song[0]
-            content_integrated[key]['song_link'] = track['uri']
-            
-            # get album art & link
-            content_integrated[key]['album_art'] = track['album']['images'][1]['url']
-            content_integrated[key]['album_link'] = track['album']['uri']
-
-            # get year
-            content_integrated[key]['year'] = year
-        # elif (len(track) > 0)
-        else:
-            # print(len(track))
-            # print(track)
-            
-            content_integrated[key]['artists'].append(song[1])
-
-            content_integrated[key]['song'] = song[0]
-            content_integrated[key]['year']
-
-    '''
-
     return render_template('results.html', data=content_integrated, city=cityClean, moods=moodsClean.replace(' ', ", "))
+
+@app.route('/test')
+def svg_test():
+    current_url = request.url
+
+    urlQuery = current_url[current_url.index('?') + 1:]
+    urlQuerySplit = urlQuery.split('&');
+
+    cityRaw = urlQuerySplit[0]
+    moodsRaw = urlQuerySplit[1]
+
+    cityClean = cityRaw.replace("key=", "").replace('_', ' ')
+    moodsClean = moodsRaw.replace("moods=", "").replace('_', ' ')
+
+    content = apq.top_songs_query(cityClean, query=moodsClean)
+
+    return render_template('test.html', data=content, city=cityClean, moods=moodsClean.replace(' ', ","))
 
 
 app.run(debug=False)
