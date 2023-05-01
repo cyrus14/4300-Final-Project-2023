@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+why am i doing this
+{% endblock %}
+
+{% block body %}
+
+<body>
+    {% for item in data %}
+    <svg id="svg{{ item['id'] }}" height=400 width=400></svg>
+    {% endfor %}
+
+    <script>
+        const content = JSON.parse('{{ data | tojson }}');
+        print(content)
+    </script>
+</body>
