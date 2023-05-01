@@ -439,3 +439,20 @@ ul li {
         transform: rotate(360deg);
     }
 }
+
+/*
+
+// svg
+.gridlines line {
+    stroke: #bbb;
+}
+
+.gridlines .domain {
+    stroke: none;
+}
+
+.axis {
+    stroke: #bbb !important;
+}
+
+*/
