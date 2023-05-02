@@ -31,6 +31,7 @@ results
                     {% if data[item]['album_art'] == '' %}
                     <img class='album' src="{{ url_for('static', filename='images/placeholder-01.jpg') }}"
                         alt='album art' />
+                    <audio id="{{ data[item]['id']|string }}audio" src="{{ data[item]['preview_url'] }}"></audio>
                     {% else %}
                     <img id="{{ data[item]['id']|string }}cover" class='album overlay' src="{{ data[item]['album_art'] }}" alt='album art'></img>
                     <audio id="{{ data[item]['id']|string }}audio" src="{{ data[item]['preview_url'] }}"></audio>

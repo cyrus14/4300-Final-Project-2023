@@ -38,9 +38,6 @@ with open(os.environ['ROOT_PATH'] + '/song_to_index.pkl', 'rb') as pickle_file:
 with open(os.environ['ROOT_PATH'] + '/index_to_song.pkl', 'rb') as pickle_file:
     idx_to_song = pickle.load(pickle_file)
 
-with open(os.environ['ROOT_PATH'] + '/vectorizer.pkl', 'rb') as pickle_file:
-    vectorizer = pickle.load(pickle_file)
-
 with open(os.environ['ROOT_PATH'] + '/unique_tags.pkl', 'rb') as pickle_file:
     unique_tags = pickle.load(pickle_file)
 
@@ -70,9 +67,6 @@ with open(os.environ['ROOT_PATH'] + '/idf.pkl', 'rb') as pickle_file:
 
 with open(os.environ['ROOT_PATH'] + '/norms.pkl', 'rb') as pickle_file:
     norms = pickle.load(pickle_file)
-
-f = open('dataset/wiki_scraping/wiki_texts.json')
-wiki_texts = json.load(f)
 
 with zipfile.ZipFile(os.environ['ROOT_PATH'] + '/dataset/big_df_edited.csv.zip', 'r') as zip_ref:
     zip_ref.extractall(os.environ['ROOT_PATH'] + '/dataset/')
