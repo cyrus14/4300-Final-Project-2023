@@ -182,7 +182,7 @@ body {
     padding: 1px;
     margin: 4px 0px 0px 0;
     font-family: 'DM Sans', sans-serif !important;
-    height: 30px;
+    height: auto;
 }
 
 .select2-selection__choice {
