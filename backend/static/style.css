@@ -502,15 +502,15 @@ ul li {
 	width: 300px;
 	height: auto;
 	position: absolute;
-	left: 50%;
+	left: -15%;
 	transform: translate(-50%, 5%);
 	border-radius: 10px;
 /* 	border: 1px solid #E0E0E0; */
 	font-size: 12px;
 	line-height: 18px;
 	z-index: 99;
-    margin-left: 35%;
-    margin-top: -5%;
+    margin-left: 25%;
+    margin-top: -12.5%;
 }
 
 /* The pointer of the tooltip */
@@ -533,9 +533,9 @@ ul li {
 }
 
 .graph{
-    height: 300px;
-    width: 300px;
-    border-radius: 10px;
+    height: 400px;
+    width: 400px;
+    border-radius: 15px;
 }
 
 .graph :after{
