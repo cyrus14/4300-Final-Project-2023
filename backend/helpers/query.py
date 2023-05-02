@@ -18,8 +18,8 @@ os.environ['ROOT_PATH'] = root_path
 
 
 # unpickle wiki_tf_idf (vec2)
-with open(os.environ['ROOT_PATH']  + '/wiki_tf_idf.pkl', 'rb') as pickle_file:
-    wiki_tfidf = pickle.load(pickle_file)#.toarray()
+with open(os.environ['ROOT_PATH'] + '/wiki_tf_idf.pkl', 'rb') as pickle_file:
+    wiki_tfidf = pickle.load(pickle_file)  # .toarray()
 
 # unpickle song_tf_idf (X)
 with open(os.environ['ROOT_PATH'] + '/song_tf_idf.pkl', 'rb') as pickle_file:
@@ -81,27 +81,31 @@ big_df = pd.read_csv(os.environ['ROOT_PATH'] + '/dataset/big_df_edited.csv')
 big_df['emotions'] = big_df['emotions'].apply(ast.literal_eval)
 big_df['emotions'] = big_df['emotions'].apply(lambda x: [tup[0] for tup in x])
 
+
 def get_query_vec(query):
-    query_tagf = np.zeros((1,len(unique_tags)))
+    query_tagf = np.zeros((1, len(unique_tags)))
     for wrd in query.split():
         if wrd in unique_tags:
             i = tag_to_index[wrd]
-            query_tagf[0,i] += 1
+            query_tagf[0, i] += 1
     return normalize(query_tagf @ words_compressed)
 
-def closest_songs_to_query(query, k = 5):
+
+def closest_songs_to_query(query, k=5):
     query_vec = get_query_vec(query)
     sims = normalize(query_vec).dot(docs_compressed_normed.T)[0]
     asort = np.argsort(-sims)[:k+1]
-    return [ {'title':big_df['title'].iloc[i], 
-              'artist':big_df['artist'].iloc[i], 
-              'year':big_df['year'].iloc[i], 
-              'views':big_df['views'].iloc[i], 
-              'sim':sims[i], 
-              'score':sims[i]} for i in asort[0:]]
+    return [{'title': big_df['title'].iloc[i],
+             'artist':big_df['artist'].iloc[i],
+             'year':big_df['year'].iloc[i],
+             'views':big_df['views'].iloc[i],
+             'sim':sims[i],
+             'score':sims[i]} for i in asort[0:]]
+
 
 def test():
     print('hello')
+
 
 def accumulate_dot_scores(query_word_counts, inv_idx, idf):
     doc_scores = {}
@@ -110,7 +114,7 @@ def accumulate_dot_scores(query_word_counts, inv_idx, idf):
         if wrd in idf:
             idf_i = idf[wrd]
         qi = query_word_counts[wrd] * idf_i
-        if wrd in inv_idx:
+        if wrd in idf:
             for tup in inv_idx[wrd]:
                 docid = tup[0]
                 dij = tup[1] * idf[wrd]
@@ -121,19 +125,21 @@ def accumulate_dot_scores(query_word_counts, inv_idx, idf):
                     doc_scores[docid] = this_dot
     return doc_scores
 
+
 def get_city_query_and_scores(city):
     q_dict = Counter(wiki_texts[city])
     q_norm = 0
     for wrd in q_dict:
         idf_i = 0
         if wrd in idf:
-            idf_i =  idf[wrd]
+            idf_i = idf[wrd]
         q_norm += (idf_i * q_dict[wrd]) ** 2
     q_norm = np.sqrt(q_norm)
     dot_scores = accumulate_dot_scores(q_dict, song_inv_idx, idf)
     return q_norm, dot_scores
 
-def top_songs_query(city, query = "sad energetic"):
+
+def top_songs_query(city, query="sad energetic"):
     print("\nSTART\n")
     best = []
     returned = []
@@ -145,13 +151,13 @@ def top_songs_query(city, query = "sad energetic"):
         if i in dot_scores:
             num = dot_scores[i]
         sim = 0
-        if norms[i]!=0:
+        if norms[i] != 0:
             sim = num / (q_norm*norms[i])
 
-        if sim == 1.0:
-            sim = 0
-    
-        pop = big_df['norm_views'].iloc[song_to_idx[song]] 
+        # if sim == 1.0:
+        #     sim = 0
+
+        pop = big_df['norm_views'].iloc[song_to_idx[song]]
 
         song_emot_vec = docs_compressed_normed[song_to_idx[song], :]
         emot_score = np.exp(query_vec @ song_emot_vec)/np.e
@@ -170,16 +176,18 @@ def top_songs_query(city, query = "sad energetic"):
                   'sim': float(t[1]),
                   'pop': float(t[2]),
                   'emot': float(t[3][0]),
-                  'score': float(t[-1][0]), 
+                  'score': float(t[-1][0]),
                   'id': int(song_to_idx[retrieved['title']])}
-        prod = song_tfidf[song_to_idx[retrieved['title']]] * wiki_tfidf[loc_to_idx[city]]
+        prod = song_tfidf[song_to_idx[retrieved['title']]] * \
+            wiki_tfidf[loc_to_idx[city]]
         strongest = np.argsort(prod)[-10:]
         strongest_words = [index_to_word[w] for w in strongest]
         print(retrieved['title'])
         print(strongest_words)
         result['best_words'] = strongest_words
-        result['score_in_song'] = list(song_tfidf[song_to_idx[retrieved['title']],strongest])
-        result['score_in_city'] = list(wiki_tfidf[loc_to_idx[city],strongest])
+        result['score_in_song'] = list(
+            song_tfidf[song_to_idx[retrieved['title']], strongest])
+        result['score_in_city'] = list(wiki_tfidf[loc_to_idx[city], strongest])
 
         print(result['score_in_song'], type(result['score_in_song']))
         print(result['score_in_city'], type(result['score_in_city']))
