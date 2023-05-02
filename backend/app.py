@@ -96,6 +96,9 @@ def my_link():
     # spotify integration
     # this STILL needs to be heavily refined
 
+    if not os.path.exists("static/viz"):
+        os.mkdir("static/viz")
+
     for item in content:
         # title = item['title'].lower().replace(' ', '%20')
         # artist = item['artist'].lower().replace(' ', '%20')
@@ -219,8 +222,7 @@ def my_link():
         else:
             content_integrated.pop(key)
         
-        if not os.path.exists("static/viz"):
-            os.mkdir("static/viz")
+        
 
     return render_template('results.html', data=content_integrated, city=cityClean, cityStripped=cityClean.replace(' ', ''), moods=moodsClean.replace(' ', ", "))
 
