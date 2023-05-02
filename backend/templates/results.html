@@ -15,9 +15,10 @@ results
             <h1 class="results-title">welcome to <span style="color: #b447fc !important;">{{ city }}</span>! here's your
                 playlist...</h1>
 
-            <h2 id='playlist-tags' class="results-expl" style="display: none;">this playlist is <span style="color: #b447fc !important;"></span></h2>
-
-
+            {% if moods %}
+            <h2 class="results-expl">this playlist is <span style="color: #b447fc !important;">{{ moods }}</span></h2>
+            {% endif %}
+                
         </div>
 
         <div class='card-holder'>
@@ -71,16 +72,6 @@ results
 
             {% endfor %}
         </div>
-
-        <script>
-            const playlistTags = document.getElementById('playlist-tags');
-            if (moods === null) {
-              playlistTags.style.display = 'none';
-            } else {
-              playlistTags.style.display = 'block';
-              playlistTags.querySelector('span').textContent = moods;
-            }
-          </script>
 
         <script>
             const areas = document.getElementsByClassName('Area');
