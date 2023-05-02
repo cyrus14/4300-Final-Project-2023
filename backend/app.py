@@ -9,6 +9,8 @@ import helpers.query as apq
 import pickle
 from return_songs import find_nonzero_indices
 import plotly.express as px
+import pandas as pd
+import numpy as np
 import kaleido 
 
 
@@ -150,8 +152,41 @@ def my_link():
             content_integrated[key]['song'] = item['title']
             content_integrated[key]['year'] = year
             content_integrated[key]['id'] = track['id']
+        
+        if not os.path.exists("static/viz"):
+            os.mkdir("static/viz")
 
-    return render_template('results.html', data=content_integrated, city=cityClean, moods=moodsClean.replace(' ', ", "))
+        temp_df = pd.DataFrame.from_dict(item)
+        temp_df['score_in_city'] = temp_df['score_in_city']
+        temp_df = pd.melt(temp_df, id_vars=['best_words'], value_vars=['score_in_city', 'score_in_song'])
+
+        fig = px.line_polar(
+            data_frame=temp_df,
+            r='value',
+            theta='best_words',
+            color='variable',
+            color_discrete_sequence=['magenta', 'dodgerblue'],
+            line_close=True,
+            template='plotly_dark',
+            log_r=False,
+            height=500,
+            width=500,
+            range_r=[0, max(temp_df['value'])],
+        )
+
+        fig.update_traces(fill='toself')
+        fig.update_layout(legend=dict(
+            orientation="h",
+            y=-0.2,
+            yanchor="bottom",
+            bgcolor = "rgba(0,0,0,0)",
+        ))
+
+        temp_filename = "static/viz/" + cityClean.replace(' ', '') + str(content_integrated[key]['id']) + ".svg"
+
+        fig.write_image(temp_filename)
+
+    return render_template('results.html', data=content_integrated, city=cityClean, cityStripped=cityClean.replace(' ', ''), moods=moodsClean.replace(' ', ", "))
 
 @app.route('/test')
 def svg_test():
@@ -173,8 +208,11 @@ def svg_test():
 
     for item in content:
         temp_df = pd.DataFrame.from_dict(item)
-        temp_df['score_in_city'] = temp_df['score_in_city'] * 10.
+        temp_df['score_in_city'] = np.linalg.norm(temp_df['score_in_city'])
+        temp_df['score_in_song'] = np.linalg.norm(temp_df['score_in_song'])
         temp_df = pd.melt(temp_df, id_vars=['best_words'], value_vars=['score_in_city', 'score_in_song'])
+
+        # temp_df['value'] = np.log(temp_df['value'] + 1.)
 
         fig = px.line_polar(
             data_frame=temp_df,
@@ -184,11 +222,19 @@ def svg_test():
             color_discrete_sequence=['magenta', 'dodgerblue'],
             line_close=True,
             template='plotly_dark',
-            log_r=False,
-            range_r=[0, max(temp_df['value'])],
+            log_r=True,
+            height=500,
+            width=500,
+            # range_r=[0, max(temp_df['value'])],
         )
 
         fig.update_traces(fill='toself')
+        fig.update_layout(legend=dict(
+            orientation="h",
+            y=-0.2,
+            yanchor="bottom",
+            bgcolor = "rgba(0,0,0,0)",
+        ))
 
         temp_filename = "static/viz/" + cityClean.replace(' ', '') + str(item['id']) + ".svg"
 
@@ -197,5 +243,4 @@ def svg_test():
 
     return render_template('test.html', data=content, city=cityClean.replace(' ', ''), moods=moodsClean.replace(' ', ","))
 
-
-# app.run(debug=False)
+app.run(debug=True)
