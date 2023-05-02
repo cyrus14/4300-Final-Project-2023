@@ -393,9 +393,9 @@ ul li {
     color: #efefef;
 
     flex: 1;
-
+    line-height: 0.5em;
     display: flex;
-
+    font-size: 25px;
     margin-left: 1em;
 
     justify-content: center !important;
