@@ -106,7 +106,6 @@ def my_link():
 
         # spotify query construction
         spq = "track\:" + item['title'] + "%20artist\:" + item['artist']
-        # spq ="artist:" + item['artist'] + " track:" + item['title'] + " year:" + year
 
         # spotify query result
         results = sp.search(spq, limit=1, market='US', type='track')

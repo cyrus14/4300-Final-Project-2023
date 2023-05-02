@@ -513,17 +513,6 @@ ul li {
     margin-top: -5%;
 }
 
-/* The pointer of the tooltip */
-.tip p:before { 
-	position:relative;
-	content: '';
-	width: 0;
-	height: 0;
-	border: 10px solid transparent;
-	border-bottom-color:#FFFFFF;
-	transform: translate(-50%, -50%);
-}
-
  /* Prevents the tooltip from being hidden */
 .tip p :after {
 	width: 10px;
@@ -601,17 +590,6 @@ ul li {
 	z-index: 99;
     margin-left: 35%;
     margin-top: -4%
-}
-
-
-.logo p:before { 
-	position:relative;
-	content: '';
-	width: 0;
-	height: 0;
-	border: 10px solid transparent;
-	border-bottom-color:#FFFFFF;
-	transform: translate(-50%, -50%);
 }
 
 
