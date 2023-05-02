@@ -151,7 +151,7 @@ def my_link():
 
             content_integrated[key]['song'] = item['title']
             content_integrated[key]['year'] = year
-            content_integrated[key]['id'] = track['id']
+            content_integrated[key]['id'] = item['id']
         
         if not os.path.exists("static/viz"):
             os.mkdir("static/viz")
