@@ -48,9 +48,9 @@ max_df = .8 * n_docs
 min_df = 10
 for wrd in inv_idx:
     n_docs_wrd = len(inv_idx[wrd])
-    if n_docs_wrd >= min_df and n_docs_wrd < max_df:
-        idf_t = np.log2(n_docs / (1 + n_docs_wrd))
-        idf[wrd] = idf_t
+    # if n_docs_wrd >= min_df and n_docs_wrd < max_df:
+    idf_t = np.log2(n_docs / (1 + n_docs_wrd))
+    idf[wrd] = idf_t
 
 with open('idf.pkl', 'wb') as f:
     pickle.dump(idf, f)
