@@ -45,8 +45,9 @@ results
                             {% if data[item][artists]|length == 1 %}
                             {{ artist }}
                             {% else %}
+                            {% set x = data[item]['artists']|length %}
                             {% for artist in data[item]['artists'] %}
-                            {{ artist }},
+                            {{ artist }}{% if x - loop.index > 0 %},{% endif %}
                             {% endfor %}
                             {% endif %}
                             {% if data[item]['song_link'] != '' %}
@@ -70,8 +71,9 @@ results
                         <p>Emotion</p>
                     
 
-                    </span> {% endif %}
+                    </span> 
                     <br>
+                    {% endif %}
                     <span class="logo" style="color: #b447fc"><i class="bi bi-check2-circle"></i> {{ data[item]['score'] }}%
                         <p>Total Score</p>
                     </span> <br>
