@@ -5,8 +5,6 @@ import numpy as np
 from scipy.sparse.linalg import svds
 from sklearn.preprocessing import normalize
 
-# MOVE ALL PKL FILES TO BACKEND!
-
 df = pd.read_csv('../backend/dataset/big_df_edited.csv')
 
 df = df.drop(columns=['Unnamed: 0'])
@@ -17,10 +15,29 @@ df['emotions'] = df['emotions'].apply(ast.literal_eval)
 if type(df['emotions'][0][0]) != str:
     df['emotions'] = df['emotions'].apply(lambda x: [tup[0] for tup in x])
 
+print(set([j for sub in df['emotions'].values for j in sub]))
+bad_tags = {'aggression': 'aggressive', 'anger': 'angry', 'angst-ridden': 'angst', 'anxiety': 'anxious',
+            'calmed': 'calm', 'calmness': 'calm', 'celebrate': 'celebratory', 'cheer': 'cheerful',
+            'cheer-up': 'cheerful', 'cheering': 'cheerful', 'cheerup': 'cheerful', 'contemplate': 'contemplative',
+            'cry': 'crying', 'depressed': 'depressing', 'depressive': 'depressing', 'excite': 'excited',
+            'excitement': 'excited', 'exciting': 'excited', 'fight': 'fighting', 'funereal': 'sad',
+            'happiness': 'happy', 'happy songs': 'happy', 'happy music': 'happy',
+            'heartbreaking': 'heartbroken', 'heartbreak': 'heartbroken', 'humor': 'humorous',
+            'intensive': 'intense', 'joyous': 'joyful',
+            'lament': 'lamenting', 'melancholy': 'melancholic', 'misery': 'miserable', 'mourn': 'mournful',
+            'outrage': 'outrageous', 'passion': 'passionate', 'peace': 'peaceful', 'quietly': 'quiet',
+            'quietness': 'quiet', 'rebel': 'rebellious', 'relax': 'relaxed', 'relaxing': 'relaxed',
+            'sadness': 'sad', 'sob': 'sobbing', 'soothe': 'soothing', 'thrill': 'thrilling',
+            'tragedy': 'tragic', 'vigor': 'vigorous', 'weep': 'weeping'}
+
+df['emotions'] = df['emotions'].apply(
+    lambda ls: [bad_tags[tag] if tag in bad_tags else tag for tag in ls])
+
 df['log_views'] = np.log(df['views'] + 1)
 df['norm_views'] = df['log_views'] / max(df['log_views'])
 
 unique_tags = set([j for sub in df['emotions'].values for j in sub])
+print(unique_tags)
 
 with open('../backend/unique_tags.pkl', 'wb') as f:
     pickle.dump(unique_tags, f)
