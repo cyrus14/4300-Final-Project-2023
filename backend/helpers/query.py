@@ -148,6 +148,7 @@ def top_songs_query(city, query):
     print("lyr sim", lyr_sym.shape)
     # (query_vec @ docs_compressed_normed).sum(axis=1)
     emot_sym = (docs_compressed_normed@query_vec.T).squeeze()
+    emot_sym = (emot_sym - emot_sym.min())/(emot_sym.max() - emot_sym.min())
     print("emot_sym", emot_sym.shape)
 
     alpha = .7
