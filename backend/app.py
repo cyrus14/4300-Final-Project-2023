@@ -115,6 +115,8 @@ def my_link():
                                    'album_art': '',
                                    'album_link': '',
                                    'year': '',
+                                   'preview_url': '',
+                                   'id': '',
                                    'sim': round(item['sim'] * 100.0, 2),
                                    'pop': round(item['pop'] * 100.0, 2),
                                    'emot': round(item['emot'] * 100.0, 2),
@@ -135,6 +137,10 @@ def my_link():
 
             content_integrated[key]['album_art'] = track['album']['images'][1]['url']
             content_integrated[key]['album_link'] = track['album']['uri']
+            
+            content_integrated[key]['preview_url'] = track['preview_url']
+
+            content_integrated[key]['id'] = track['id']
         else:
             # print(len(track))
             # print(track)
@@ -142,7 +148,8 @@ def my_link():
             content_integrated[key]['artists'].append(item['artist'])
 
             content_integrated[key]['song'] = item['title']
-            content_integrated[key]['year']
+            content_integrated[key]['year'] = year
+            content_integrated[key]['id'] = track['id']
 
     return render_template('results.html', data=content_integrated, city=cityClean, moods=moodsClean.replace(' ', ", "))
 
