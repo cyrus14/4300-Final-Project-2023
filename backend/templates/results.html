@@ -90,8 +90,8 @@ results
                     console.log(img);
                     console.log(audio);
 
-                    img.addEventListener('mouseover', () => { audio.play(); console.log("AAAAA"); });
-                    img.addEventListener('mouseout', () => { console.log("PLEASE GOD"); audio.pause(); audio.currentTime = 0; });
+                    img.addEventListener('mouseover', () => { audio.play() });
+                    img.addEventListener('mouseout', () => { audio.pause(); audio.currentTime = 0; });
                 } else {
                     console.log('false');
                 }
