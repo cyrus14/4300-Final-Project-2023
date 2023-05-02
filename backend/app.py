@@ -11,7 +11,7 @@ from return_songs import find_nonzero_indices
 import plotly.express as px
 import pandas as pd
 import numpy as np
-import kaleido 
+import kaleido
 
 
 # # https://spotipy.readthedocs.io/en/2.22.1/
@@ -81,7 +81,7 @@ def my_link():
     current_url = request.url
 
     urlQuery = current_url[current_url.index('?') + 1:]
-    urlQuerySplit = urlQuery.split('&');
+    urlQuerySplit = urlQuery.split('&')
 
     cityRaw = urlQuerySplit[0]
     moodsRaw = urlQuerySplit[1]
@@ -109,7 +109,7 @@ def my_link():
         # spq ="artist:" + item['artist'] + " track:" + item['title'] + " year:" + year
 
         # spotify query result
-        results = sp.search(spq, limit=1, market = 'US', type='track')
+        results = sp.search(spq, limit=1, market='US', type='track')
         track = results['tracks']['items']
 
         key = item['title']
@@ -126,8 +126,7 @@ def my_link():
                                    'sim': round(item['sim'] * 100.0, 2),
                                    'pop': round(item['pop'] * 100.0, 2),
                                    'emot': round(item['emot'] * 100.0, 2),
-                                   'score': round(item['score'] * 100.0, 2) }
-        
+                                   'score': round(item['score'] * 100.0, 2)}
 
         if (len(track) > 0 and ((item['title'].lower() in track[0]['name'].lower()) or (track[0]['artists'][0]['name'].lower() in item['artist'].lower()))):
             track = track[0]
@@ -147,17 +146,20 @@ def my_link():
                 # rarely, we get a song with no album art up on Spotify; this is how we mitigate it
                 pass
             content_integrated[key]['album_link'] = track['album']['uri']
-            
+
             content_integrated[key]['preview_url'] = track['preview_url']
 
             content_integrated[key]['id'] = track['id']
 
             temp_df = pd.DataFrame.from_dict(item)
 
-            temp_df['score_in_city'] = temp_df['score_in_city'] / np.linalg.norm(temp_df['score_in_city'])
-            temp_df['score_in_song'] = temp_df['score_in_song'] / np.linalg.norm(temp_df['score_in_song'])
+            temp_df['score_in_city'] = temp_df['score_in_city'] / \
+                np.linalg.norm(temp_df['score_in_city'])
+            temp_df['score_in_song'] = temp_df['score_in_song'] / \
+                np.linalg.norm(temp_df['score_in_song'])
 
-            temp_df = pd.melt(temp_df, id_vars=['best_words'], value_vars=['score_in_city', 'score_in_song'])
+            temp_df = pd.melt(temp_df, id_vars=['best_words'], value_vars=[
+                              'score_in_city', 'score_in_song'])
 
             # temp_df['value'] = np.log(temp_df['value'] + 1.)
 
@@ -178,14 +180,19 @@ def my_link():
             )
 
             fig.update_traces(
-                fill='toself', 
+                fill='toself',
                 opacity=0.5
             )
             fig.update_layout(
+<<<<<<< HEAD
                 font_family = 'DM Sans, sans-serif',
                 title_font_family = 'DM Sans, sans-serif',
                 plot_bgcolor="rgba(0,0,0,0)",
                 paper_bgcolor="rgba(0,0,0,0)",
+=======
+                font_family='DM Sans, sans-serif',
+                title_font_family='DM Sans, sans-serif',
+>>>>>>> dd6b142bb16e1037be96faba1d376b07fda19ae3
                 title=dict(
                     xanchor="center",
                     yanchor="top",
@@ -199,14 +206,15 @@ def my_link():
                     x=0.5,
                     yanchor="bottom",
                     xanchor="center",
-                    bgcolor = "rgba(0,0,0,0)",
+                    bgcolor="rgba(0,0,0,0)",
                 ),
-                
+
             )
 
-            newnames = {"score_in_city": "city score", "score_in_song": "song score"}
+            newnames = {"score_in_city": "city score",
+                        "score_in_song": "song score"}
 
-            fig.for_each_trace(lambda t: t.update(name = newnames[t.name]))
+            fig.for_each_trace(lambda t: t.update(name=newnames[t.name]))
 
             fig.update_polars(
                 # angularaxis_showline=False,
@@ -223,15 +231,16 @@ def my_link():
 
             )
 
-            temp_filename = "static/viz/" + cityClean.replace(' ', '') + str(content_integrated[key]['id']) + ".svg"
+            temp_filename = "static/viz/" + \
+                cityClean.replace(' ', '') + \
+                str(content_integrated[key]['id']) + ".svg"
 
             fig.write_image(temp_filename)
         else:
             content_integrated.pop(key)
-        
-        
 
     return render_template('results.html', data=content_integrated, city=cityClean, cityStripped=cityClean.replace(' ', ''), moods=moodsClean.replace(' ', ", "))
+
 
 '''
 @app.route('/test')
@@ -330,12 +339,12 @@ def svg_test():
 
         )
 
-        temp_filename = "static/viz/" + cityClean.replace(' ', '') + str(item['id']) + ".svg"
+        temp_filename = "static/viz/" + \
+            cityClean.replace(' ', '') + str(item['id']) + ".svg"
 
         fig.write_image(temp_filename)
 
-
     return render_template('test.html', data=content, city=cityClean.replace(' ', ''), moods=moodsClean.replace(' ', ","))
 '''
-    
-app.run(debug=True)
+
+#app.run(debug=True)
