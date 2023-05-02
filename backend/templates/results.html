@@ -14,7 +14,11 @@ results
             <a href="/"><span class="back">(⇐ back)</span></a>
             <h1 class="results-title">welcome to <span style="color: #b447fc !important;">{{ city }}</span>! here's your
                 playlist...</h1>
-            <h2 class="results-expl">this playlist is <span style="color: #b447fc !important;">{{ moods }}</span></h3>
+
+            {% if moods %}
+            <h2 class="results-expl">this playlist is <span style="color: #b447fc !important;">{{ moods }}</span></h2>
+            {% endif %}
+                
         </div>
 
         <div class='card-holder'>
@@ -25,7 +29,8 @@ results
                     <img class='album' src="{{ url_for('static', filename='images/placeholder-01.jpg') }}"
                         alt='album art' />
                     {% else %}
-                    <img class='album' src="{{ data[item]['album_art'] }}" alt='album art'></img>
+                    <img id="{{ data[item]['id']|string }}cover" class='album overlay' src="{{ data[item]['album_art'] }}" alt='album art'></img>
+                    <audio id="{{ data[item]['id']|string }}audio" src="{{ data[item]['preview_url'] }}"></audio>
                     {% endif %}
                     <div class='track'>
                         {% if data[item]['song_link'] == '' %}
@@ -51,113 +56,46 @@ results
                         </h3>
 
                     </div>
-                    <div class="Area"> </div>
                 </div>
                 <div class='card-right-flex'>
-                    <span><i class="bi bi-geo-alt"></i> {{ data[item]['sim'] }}%</span> <br>
-                    <span><i class="bi bi-graph-up-arrow"></i> {{ data[item]['pop'] }}%</span> <br>
-                    <span><i class="bi bi-emoji-smile"></i> {{ data[item]['emot'] }}%</span> <br>
-                    <span style="color: #b447fc"><i class="bi bi-check2-circle"></i> {{ data[item]['score'] }}%</span>
+                    <span class="logo"><i class="bi bi-geo-alt"></i> {{ data[item]['sim'] }}%
+                        <p>Location</p>
+                    </span> <br>
+                    <span class="logo"><i class="bi bi-graph-up-arrow"></i> {{ data[item]['pop'] }}%
+                        <p>Popularity</p>
+                    </span> <br>
+                    <span class="logo"><i class="bi bi-emoji-smile"></i> {{ data[item]['emot'] }}%
+                        <p>Emotion</p>
+                    </span> <br>
+                    <span class="logo" style="color: #b447fc"><i class="bi bi-check2-circle"></i> {{ data[item]['score'] }}%
+                        <p>Total Score</p>
+                    </span> <br>
                 </div>
-
-                <!-- Load d3.js -->
-
-
             </div>
-
-
             {% endfor %}
         </div>
 
         <script>
-            const areas = document.getElementsByClassName('Area');
+            const content = JSON.parse('{{ data | tojson }}');
 
-            for (let i = 0; i < areas.length; i++) areas[i].setAttribute('id', i + 1);
+            for (item in content) {
+                var selection = content[item];
 
-            for (let i = 0; i < areas.length; i++) {
-                // set the dimensions and margins of the graph
-                console.log(area);
-                var margin = { top: 10, right: 40, bottom: 30, left: 30 },
-                    width = 50 - margin.left - margin.right,
-                    height = 50 - margin.top - margin.bottom;
+                let img = document.getElementById(selection['id'] + 'cover');
 
-                // append the svg object to the body of the page
-                var sVg = d3.select("#" + String(i + 1))
-                    .append("svg")
-                    .attr("width", width + margin.left + margin.right)
-                    .attr("height", height + margin.top + margin.bottom)
-                    // translate this svg element to leave some margin.
-                    .append("g")
-                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-                console.log(area);
-                // X scale and Axis
-                var x = d3.scaleLinear()
-                    .domain([0, 100])         // This is the min and the max of the data: 0 to 100 if percentages
-                    .range([0, width]);       // This is the corresponding value I want in Pixel
-                sVg
-                    .append('g')
-                    .attr("transform", "translate(0," + height + ")")
-                    .call(d3.axisBottom(x));
+                if (!(img == null)) {
+                    let audio = document.getElementById(selection['id'] + 'audio');
+                    
+                    console.log(img);
+                    console.log(audio);
 
-                // X scale and Axis
-                var y = d3.scaleLinear()
-                    .domain([0, 100])         // This is the min and the max of the data: 0 to 100 if percentages
-                    .range([height, 0]);       // This is the corresponding value I want in Pixel
-                sVg
-                    .append('g')
-                    .call(d3.axisLeft(y));
+                    img.addEventListener('mouseover', () => { audio.play(); console.log("AAAAA"); });
+                    img.addEventListener('mouseout', () => { console.log("PLEASE GOD"); audio.pause(); audio.currentTime = 0; });
+                } else {
+                    console.log('false');
+                }
             }
-
         </script>
-
-        <!--
-
-
-            <div class="card-holder">
-                {% for item in data %}
-                    <div class='card'>
-                        <div class='card-outer-flex'>
-                            <div class='card-left-flex'>
-                                {% if data[item]['album_art'] == '' %}
-                                <img class='album' src="{{ url_for('static', filename='images/placeholder-01.jpg') }}" alt='album art' />
-                                {% else %}
-                                <img class='album' src="{{ data[item]['album_art'] }}" alt='album art'></img>
-                                {% endif %}
-                                <div class='track'>
-                                    {% if data[item]['song_link'] == '' %}
-                                    <h1 class='card-title'>{{ data[item]['song'] }}</h1>
-                                    {% else %}
-                                    <h1 class='card-title'><a href="{{ data[item]['song_link'] }}">{{ data[item]['song'] }}</a></h1>
-                                    {% endif %}
-                                    <h3 class='card-artists'>
-                                        {% if data[item][artists]|length == 1 %}
-                                        {{ artist }}
-                                        {% else %}
-                                            {% for artist in data[item]['artists'] %}
-                                            {{ artist }},
-                                            {% endfor %}
-                                        {% endif %}
-                                    </h3>
-                                    <span style='color: red'>sim: {{ data[item]['sim'] }}</span> <br>
-                                    <span style='color: red'>pop: {{ data[item]['pop'] }}</span> <br>
-                                    <span style='color: red'>emot: {{ data[item]['emot'][0] }}</span> <br>
-                                    <span style='color: blue'>score: {{ data[item]['score'][0] }}</span>
-                                </div>
-                            </div>
-                            <div class='card-right-flex'>
-
-                            </div>
-                        </div>
-                        
-                    </div>
-                {% endfor %}
-            </div>
-
-            -->
-
-    </div>
-
-    </div>
 </body>
 
 

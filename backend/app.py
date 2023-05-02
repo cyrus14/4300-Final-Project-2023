@@ -1,12 +1,16 @@
 import json
 import pandas as pd
 import os
+import shutil
 from flask import Flask, render_template, request
 from flask_cors import CORS
 from helpers.MySQLDatabaseHandler import MySQLDatabaseHandler
 import helpers.query as apq
 import pickle
 from return_songs import find_nonzero_indices
+import plotly.express as px
+import kaleido 
+
 
 # # https://spotipy.readthedocs.io/en/2.22.1/
 import spotipy
@@ -63,6 +67,10 @@ sp = spotipy.Spotify(
 
 @app.route("/")
 def home():
+    try:
+        shutil.rmtree(os.environ['ROOT_PATH'] + '/static/viz')
+    except FileNotFoundError as e:
+        pass
     return render_template('home.html', title="sample html")
 
 
@@ -107,6 +115,8 @@ def my_link():
                                    'album_art': '',
                                    'album_link': '',
                                    'year': '',
+                                   'preview_url': '',
+                                   'id': '',
                                    'sim': round(item['sim'] * 100.0, 2),
                                    'pop': round(item['pop'] * 100.0, 2),
                                    'emot': round(item['emot'] * 100.0, 2),
@@ -127,6 +137,10 @@ def my_link():
 
             content_integrated[key]['album_art'] = track['album']['images'][1]['url']
             content_integrated[key]['album_link'] = track['album']['uri']
+            
+            content_integrated[key]['preview_url'] = track['preview_url']
+
+            content_integrated[key]['id'] = track['id']
         else:
             # print(len(track))
             # print(track)
@@ -134,7 +148,8 @@ def my_link():
             content_integrated[key]['artists'].append(item['artist'])
 
             content_integrated[key]['song'] = item['title']
-            content_integrated[key]['year']
+            content_integrated[key]['year'] = year
+            content_integrated[key]['id'] = track['id']
 
     return render_template('results.html', data=content_integrated, city=cityClean, moods=moodsClean.replace(' ', ", "))
 
@@ -143,7 +158,7 @@ def svg_test():
     current_url = request.url
 
     urlQuery = current_url[current_url.index('?') + 1:]
-    urlQuerySplit = urlQuery.split('&');
+    urlQuerySplit = urlQuery.split('&')
 
     cityRaw = urlQuerySplit[0]
     moodsRaw = urlQuerySplit[1]
@@ -153,7 +168,34 @@ def svg_test():
 
     content = apq.top_songs_query(cityClean, query=moodsClean)
 
-    return render_template('test.html', data=content, city=cityClean, moods=moodsClean.replace(' ', ","))
+    if not os.path.exists("static/viz"):
+        os.mkdir("static/viz")
+
+    for item in content:
+        temp_df = pd.DataFrame.from_dict(item)
+        temp_df['score_in_city'] = temp_df['score_in_city'] * 10.
+        temp_df = pd.melt(temp_df, id_vars=['best_words'], value_vars=['score_in_city', 'score_in_song'])
+
+        fig = px.line_polar(
+            data_frame=temp_df,
+            r='value',
+            theta='best_words',
+            color='variable',
+            color_discrete_sequence=['magenta', 'dodgerblue'],
+            line_close=True,
+            template='plotly_dark',
+            log_r=False,
+            range_r=[0, max(temp_df['value'])],
+        )
+
+        fig.update_traces(fill='toself')
+
+        temp_filename = "static/viz/" + cityClean.replace(' ', '') + str(item['id']) + ".svg"
+
+        fig.write_image(temp_filename)
+
+
+    return render_template('test.html', data=content, city=cityClean.replace(' ', ''), moods=moodsClean.replace(' ', ","))
 
 
 app.run(debug=False)
