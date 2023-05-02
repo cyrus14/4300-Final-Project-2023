@@ -124,7 +124,7 @@ def top_songs_query(city, query):
 
     score = alpha * lyr_sym + beta * emot_sym
     # print("score", score.shape)
-    best_songs = np.argsort(-score)[:20]
+    best_songs = np.argsort(-score)[:15]
     for i, ind in enumerate(best_songs):
         song = idx_to_song[ind]
         # print(song)
