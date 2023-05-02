@@ -65,9 +65,13 @@ results
                     <span class="logo"><i class="bi bi-graph-up-arrow"></i> {{ data[item]['pop'] }}%
                         <p>Popularity</p>
                     </span> <br>
+                    {% if moods %}
                     <span class="logo"><i class="bi bi-emoji-smile"></i> {{ data[item]['emot'] }}%
                         <p>Emotion</p>
-                    </span> <br>
+                    
+
+                    </span> {% endif %}
+                    <br>
                     <span class="logo" style="color: #b447fc"><i class="bi bi-check2-circle"></i> {{ data[item]['score'] }}%
                         <p>Total Score</p>
                     </span> <br>
