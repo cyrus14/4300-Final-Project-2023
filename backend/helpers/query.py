@@ -91,20 +91,19 @@ def get_query_vec(query):
 def top_songs_query(city, query):
     """
     city name to query on
-
     query is "happy excited" for example
     """
-    print("\nSTART\n")
+    # print("\nSTART\n")
     best = []
     returned = []
     query_vec = get_query_vec(query)
-    print(wiki_tfidf.shape)
-    print(song_tfidf.shape)
+    # print(wiki_tfidf.shape)
+    # print(song_tfidf.shape)
     city_vec = wiki_tfidf[loc_to_idx[city], :]
-    print("city_vec, ", city_vec.shape)
+    # print("city_vec, ", city_vec.shape)
     # np.dot(city_vec @ song_tfidf).sum(axis=1)
     lyr_sym = song_tfidf @ city_vec.T
-    print("lyr sim", lyr_sym.shape)
+    # print("lyr sim", lyr_sym.shape)
     # (query_vec @ docs_compressed_normed).sum(axis=1)
     emot_sym = (docs_compressed_normed@query_vec.T).squeeze()
     if emot_sym.max() > emot_sym.min():
@@ -112,20 +111,20 @@ def top_songs_query(city, query):
             (emot_sym.max() - emot_sym.min())
     else:
         emot_sym = np.zeros(len(emot_sym))
-    print("emot_sym", emot_sym.shape)
+    # print("emot_sym", emot_sym.shape)
 
     alpha = .7
     beta = .3
 
     score = alpha * lyr_sym + beta * emot_sym
-    print("score", score.shape)
-    best_songs = np.argsort(-score)[:10]
+    # print("score", score.shape)
+    best_songs = np.argsort(-score)[:15]
     for i, ind in enumerate(best_songs):
         song = idx_to_song[ind]
-        print(song)
+        # print(song)
         pop = big_df['norm_views'].iloc[ind]
         best.append((song, lyr_sym[ind], pop, emot_sym[ind], score[ind]))
-    print('here')
+    # print('here')
     for t in best:
         retrieved = big_df.iloc[song_to_idx[t[0]]]
         result = {'title': retrieved['title'],
@@ -141,16 +140,16 @@ def top_songs_query(city, query):
             wiki_tfidf[loc_to_idx[city]]
         strongest = np.argsort(prod)[-10:]
         strongest_words = [index_to_word[w] for w in strongest]
-        print(retrieved['title'])
-        print(strongest_words)
+        # print(retrieved['title'])
+        # print(strongest_words)
         result['best_words'] = strongest_words
         result['score_in_song'] = list(
             song_tfidf[song_to_idx[retrieved['title']], strongest])
         result['score_in_city'] = list(wiki_tfidf[loc_to_idx[city], strongest])
 
-        print(result['score_in_song'], type(result['score_in_song']))
-        print(result['score_in_city'], type(result['score_in_city']))
-        print(result['id'], type(result['id']))
+        # print(result['score_in_song'], type(result['score_in_song']))
+        # print(result['score_in_city'], type(result['score_in_city']))
+        # print(result['id'], type(result['id']))
 
         returned.append(result)
     print("END QUERY")
