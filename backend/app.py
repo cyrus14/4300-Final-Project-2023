@@ -185,6 +185,7 @@ def my_link():
             fig.update_layout(
                 font_family = 'DM Sans, sans-serif',
                 title_font_family = 'DM Sans, sans-serif',
+                font=dict(size=18),
                 plot_bgcolor="rgba(0,0,0,0)",
                 paper_bgcolor="rgba(0,0,0,0)",
                 title=dict(
@@ -221,7 +222,7 @@ def my_link():
                 radialaxis_color="rgba(220, 220, 220, 0.2)",
                 radialaxis_showticklabels=False,
                 radialaxis_tickcolor="rgba(0,0,0,0)",
-                bgcolor="rgba(0,0,0,0)"
+                bgcolor="rgba(0,0,0,0)",
 
             )
 
