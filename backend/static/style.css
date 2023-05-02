@@ -585,13 +585,13 @@ ul li {
     font-family: 'DM Sans', 'sans-serif';
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
-	text-align: center;
+	text-align: left;
 	background-color: #d9adff;
 	padding: 12px 16px;
 	width: auto;
-	height: 10px;
+	height: auto;
 	position: absolute;
-	left: 40%;
+	left: 50%;
 	transform: translate(-50%, 5%);
 	border-radius: 5px;
 	box-shadow: 0 0px 20px 0 rgba(0,0,0,0.1);
