@@ -182,7 +182,7 @@ body {
     padding: 1px;
     margin: 4px 0px 0px 0;
     font-family: 'DM Sans', sans-serif !important;
-    height: 30px;
+    height: auto;
 }
 
 .select2-selection__choice {
@@ -479,7 +479,8 @@ ul li {
 	width: 15px;
 	height: 15px;
 	line-height: 16px;
-    right:560px;
+    right:40vw;
+    transform: translateY(5vh);
     top: auto;
 }
 
@@ -490,15 +491,15 @@ ul li {
     animation: fadeIn 0.3s ease;
 }
 
-.tip p{    
+/* The tooltip */
+.tip p {    
 	display: none;
 	font-family: sans-serif;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 	text-align: center;
-	background-color: #ffffff;
-	padding: 12px 16px;
-	width: 100px;
+    background: none;
+	width: 300px;
 	height: auto;
 	position: absolute;
 	left: 50%;
@@ -512,12 +513,29 @@ ul li {
     margin-top: -5%;
 }
 
+/* The pointer of the tooltip */
+.tip p:before { 
+	position:relative;
+	content: '';
+	width: 0;
+	height: 0;
+	border: 10px solid transparent;
+	border-bottom-color: none;
+	transform: translate(-50%, -50%);
+}
+
  /* Prevents the tooltip from being hidden */
 .tip p :after {
 	width: 10px;
 	height: 40px;
 	content: '';
     position: absolute;
+}
+
+.graph{
+    height: 300px;
+    width: 300px;
+    border-radius: 10px;
 }
 
 .graph :after{
@@ -540,7 +558,6 @@ ul li {
 .select2-container--default .select2-selection--single {
     background-color: #fff;
     border: 1px solid #aaa;
-    height: auto;
     border-radius: 4px;
 }
 
@@ -549,7 +566,7 @@ ul li {
 }
 
 
-/** logo tooltip used this link for the tooltip https://codepen.io/hajududat/pen/VqpxgG**/​
+/** logo tooltip **/​
 
 .logo {
 	cursor: default;
@@ -569,8 +586,8 @@ ul li {
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 	text-align: center;
-	background-color: #FFFFFF;
-	padding: 8px;
+	background-color: #d9adff;
+	padding: 12px 16px;
 	width: auto;
 	height: 10px;
 	position: absolute;
@@ -584,6 +601,17 @@ ul li {
 	z-index: 99;
     margin-left: 35%;
     margin-top: -4%
+}
+
+
+.logo p:before { 
+	position:relative;
+	content: '';
+	width: 0;
+	height: 0;
+	border: 10px solid transparent;
+	border-bottom-color:none;
+	transform: translate(-50%, -50%);
 }
 
 
@@ -618,6 +646,4 @@ ul li {
     opacity: 0.8;
 }
 
-.popup {
-    margin-top: -30px;
-}
+
