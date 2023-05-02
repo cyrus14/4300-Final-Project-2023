@@ -184,15 +184,10 @@ def my_link():
                 opacity=0.5
             )
             fig.update_layout(
-<<<<<<< HEAD
                 font_family = 'DM Sans, sans-serif',
                 title_font_family = 'DM Sans, sans-serif',
                 plot_bgcolor="rgba(0,0,0,0)",
                 paper_bgcolor="rgba(0,0,0,0)",
-=======
-                font_family='DM Sans, sans-serif',
-                title_font_family='DM Sans, sans-serif',
->>>>>>> dd6b142bb16e1037be96faba1d376b07fda19ae3
                 title=dict(
                     xanchor="center",
                     yanchor="top",
@@ -347,4 +342,4 @@ def svg_test():
     return render_template('test.html', data=content, city=cityClean.replace(' ', ''), moods=moodsClean.replace(' ', ","))
 '''
 
-#app.run(debug=True)
+app.run(debug=False)
