@@ -141,7 +141,11 @@ def my_link():
 
             content_integrated[key]['year'] = year
 
-            content_integrated[key]['album_art'] = track['album']['images'][1]['url']
+            try:
+                content_integrated[key]['album_art'] = track['album']['images'][1]['url']
+            except IndexError as e:
+                # rarely, we get a song with no album art up on Spotify; this is how we mitigate it
+                pass
             content_integrated[key]['album_link'] = track['album']['uri']
             
             content_integrated[key]['preview_url'] = track['preview_url']
