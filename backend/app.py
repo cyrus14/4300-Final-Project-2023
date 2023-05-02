@@ -157,30 +157,72 @@ def my_link():
             os.mkdir("static/viz")
 
         temp_df = pd.DataFrame.from_dict(item)
-        temp_df['score_in_city'] = temp_df['score_in_city']
+
+        temp_df['score_in_city'] = temp_df['score_in_city'] / np.linalg.norm(temp_df['score_in_city'])
+        temp_df['score_in_song'] = temp_df['score_in_song'] / np.linalg.norm(temp_df['score_in_song'])
+
         temp_df = pd.melt(temp_df, id_vars=['best_words'], value_vars=['score_in_city', 'score_in_song'])
+
+        # temp_df['value'] = np.log(temp_df['value'] + 1.)
 
         fig = px.line_polar(
             data_frame=temp_df,
             r='value',
             theta='best_words',
             color='variable',
-            color_discrete_sequence=['magenta', 'dodgerblue'],
+            color_discrete_sequence=['white', 'magenta'],
             line_close=True,
             template='plotly_dark',
-            log_r=False,
+            log_r=True,
             height=500,
             width=500,
-            range_r=[0, max(temp_df['value'])],
+            # line_shape="spline",
+            title="Lyrical similarity"
+            # range_r=[0, max(temp_df['value'])],
         )
 
-        fig.update_traces(fill='toself')
-        fig.update_layout(legend=dict(
-            orientation="h",
-            y=-0.2,
-            yanchor="bottom",
-            bgcolor = "rgba(0,0,0,0)",
-        ))
+        fig.update_traces(
+            fill='toself', 
+            opacity=0.5
+        )
+        fig.update_layout(
+            font_family = 'DM Sans, sans-serif',
+            title_font_family = 'DM Sans, sans-serif',
+            title=dict(
+                xanchor="center",
+                yanchor="top",
+                x=0.5,
+                y=0.92
+            ),
+            legend=dict(
+                orientation="h",
+                title="",
+                y=-0.2,
+                x=0.5,
+                yanchor="bottom",
+                xanchor="center",
+                bgcolor = "rgba(0,0,0,0)",
+            ),
+            
+        )
+
+        newnames = {"score_in_city": "city score", "score_in_song": "song score"}
+
+        fig.for_each_trace(lambda t: t.update(name = newnames[t.name]))
+
+        fig.update_polars(
+            # angularaxis_showline=False,
+            # angularaxis_showgrid=False,
+            angularaxis_linecolor="rgba(220, 220, 220, 0.2)",
+            radialaxis_linecolor="rgba(220, 220, 220, 0.2)",
+            angularaxis_gridcolor="rgba(220, 220, 220, 0.2)",
+            radialaxis_showgrid=False,
+            radialaxis_ticks="",
+            radialaxis_color="rgba(220, 220, 220, 0.2)",
+            radialaxis_showticklabels=False,
+            radialaxis_tickcolor="rgba(0,0,0,0)"
+
+        )
 
         temp_filename = "static/viz/" + cityClean.replace(' ', '') + str(content_integrated[key]['id']) + ".svg"
 
@@ -208,8 +250,19 @@ def svg_test():
 
     for item in content:
         temp_df = pd.DataFrame.from_dict(item)
-        temp_df['score_in_city'] = np.linalg.norm(temp_df['score_in_city'])
-        temp_df['score_in_song'] = np.linalg.norm(temp_df['score_in_song'])
+
+        print(list(temp_df['score_in_city']))
+        print(list(temp_df['score_in_song']))
+        print("-----")
+
+        
+        temp_df['score_in_city'] = temp_df['score_in_city'] / np.linalg.norm(temp_df['score_in_city'])
+        temp_df['score_in_song'] = temp_df['score_in_song'] / np.linalg.norm(temp_df['score_in_song'])
+
+        print(list(temp_df['score_in_city']))
+        print(list(temp_df['score_in_song']))
+        print(list(temp_df['best_words']))
+
         temp_df = pd.melt(temp_df, id_vars=['best_words'], value_vars=['score_in_city', 'score_in_song'])
 
         # temp_df['value'] = np.log(temp_df['value'] + 1.)
@@ -219,22 +272,59 @@ def svg_test():
             r='value',
             theta='best_words',
             color='variable',
-            color_discrete_sequence=['magenta', 'dodgerblue'],
+            color_discrete_sequence=['white', 'magenta'],
             line_close=True,
             template='plotly_dark',
             log_r=True,
             height=500,
             width=500,
+            # line_shape="spline",
+            title="Lyrical similarity"
             # range_r=[0, max(temp_df['value'])],
         )
 
-        fig.update_traces(fill='toself')
-        fig.update_layout(legend=dict(
-            orientation="h",
-            y=-0.2,
-            yanchor="bottom",
-            bgcolor = "rgba(0,0,0,0)",
-        ))
+        fig.update_traces(
+            fill='toself', 
+            opacity=0.5
+        )
+        fig.update_layout(
+            font_family = 'DM Sans, sans-serif',
+            title_font_family = 'DM Sans, sans-serif',
+            title=dict(
+                xanchor="center",
+                yanchor="top",
+                x=0.5,
+                y=0.92
+            ),
+            legend=dict(
+                orientation="h",
+                title="",
+                y=-0.2,
+                x=0.5,
+                yanchor="bottom",
+                xanchor="center",
+                bgcolor = "rgba(0,0,0,0)",
+            ),
+            
+        )
+
+        newnames = {"score_in_city": "city score", "score_in_song": "song score"}
+
+        fig.for_each_trace(lambda t: t.update(name = newnames[t.name]))
+
+        fig.update_polars(
+            # angularaxis_showline=False,
+            # angularaxis_showgrid=False,
+            angularaxis_linecolor="rgba(220, 220, 220, 0.2)",
+            radialaxis_linecolor="rgba(220, 220, 220, 0.2)",
+            angularaxis_gridcolor="rgba(220, 220, 220, 0.2)",
+            radialaxis_showgrid=False,
+            radialaxis_ticks="",
+            radialaxis_color="rgba(220, 220, 220, 0.2)",
+            radialaxis_showticklabels=False,
+            radialaxis_tickcolor="rgba(0,0,0,0)"
+
+        )
 
         temp_filename = "static/viz/" + cityClean.replace(' ', '') + str(item['id']) + ".svg"
 

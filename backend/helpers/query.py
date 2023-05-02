@@ -130,7 +130,6 @@ def get_city_query_and_scores(city):
 def top_songs_query(city, query):
     """
     city name to query on
-
     query is "happy excited" for example
     """
     print("\nSTART\n")
@@ -159,14 +158,14 @@ def top_songs_query(city, query):
     beta = .3
 
     score = alpha * lyr_sym + beta * emot_sym
-    print("score", score.shape)
-    best_songs = np.argsort(-score)[:10]
+    # print("score", score.shape)
+    best_songs = np.argsort(-score)[:20]
     for i, ind in enumerate(best_songs):
         song = idx_to_song[ind]
         print(song)
         pop = big_df['norm_views'].iloc[ind]
         best.append((song, lyr_sym[ind], pop, emot_sym[ind], score[ind]))
-    print('here')
+    # print('here')
     # for i, song in enumerate(song_to_idx.keys()):
     #     num = 0
     #     if i in dot_scores:
@@ -186,7 +185,7 @@ def top_songs_query(city, query):
     #     score = (sim + 1) * (pop + 1) * (emot_score + 1) / 6
 
     #     best.append((song, sim, pop, emot_score, score))
-    print("\n2\n")
+    # print("\n2\n")
     # srtd = sorted(best, key=lambda x: x[1], reverse=True)
     for t in best:  # srtd[:10]:
         retrieved = big_df.iloc[song_to_idx[t[0]]]
@@ -203,16 +202,16 @@ def top_songs_query(city, query):
             wiki_tfidf[loc_to_idx[city]]
         strongest = np.argsort(prod)[-10:]
         strongest_words = [index_to_word[w] for w in strongest]
-        print(retrieved['title'])
-        print(strongest_words)
+        # print(retrieved['title'])
+        # print(strongest_words)
         result['best_words'] = strongest_words
         result['score_in_song'] = list(
             song_tfidf[song_to_idx[retrieved['title']], strongest])
         result['score_in_city'] = list(wiki_tfidf[loc_to_idx[city], strongest])
 
-        print(result['score_in_song'], type(result['score_in_song']))
-        print(result['score_in_city'], type(result['score_in_city']))
-        print(result['id'], type(result['id']))
+        # print(result['score_in_song'], type(result['score_in_song']))
+        # print(result['score_in_city'], type(result['score_in_city']))
+        # print(result['id'], type(result['id']))
 
         returned.append(result)
     print("END QUERY")
