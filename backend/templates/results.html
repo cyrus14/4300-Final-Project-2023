@@ -58,10 +58,18 @@ results
                     </div>
                 </div>
                 <div class='card-right-flex'>
-                    <span><i class="bi bi-geo-alt"></i> {{ data[item]['sim'] }}%</span> <br>
-                    <span><i class="bi bi-graph-up-arrow"></i> {{ data[item]['pop'] }}%</span> <br>
-                    <span><i class="bi bi-emoji-smile"></i> {{ data[item]['emot'] }}%</span> <br>
-                    <span style="color: #b447fc"><i class="bi bi-check2-circle"></i> {{ data[item]['score'] }}%</span>
+                    <span class="logo"><i class="bi bi-geo-alt"></i> {{ data[item]['sim'] }}%
+                        <p>Location</p>
+                    </span> <br>
+                    <span class="logo"><i class="bi bi-graph-up-arrow"></i> {{ data[item]['pop'] }}%
+                        <p>Popularity</p>
+                    </span> <br>
+                    <span class="logo"><i class="bi bi-emoji-smile"></i> {{ data[item]['emot'] }}%
+                        <p>Emotion</p>
+                    </span> <br>
+                    <span class="logo" style="color: #b447fc"><i class="bi bi-check2-circle"></i> {{ data[item]['score'] }}%
+                        <p>Total Score</p>
+                    </span> <br>
                 </div>
             </div>
             {% endfor %}
