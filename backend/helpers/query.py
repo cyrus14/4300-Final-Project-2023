@@ -10,6 +10,7 @@ from scipy.sparse.linalg import svds
 from sklearn.preprocessing import normalize
 import random
 from collections import Counter
+import functools
 
 # PICKLE :)
 
@@ -82,6 +83,7 @@ big_df['emotions'] = big_df['emotions'].apply(ast.literal_eval)
 big_df['emotions'] = big_df['emotions'].apply(lambda x: [tup[0] for tup in x])
 
 
+@functools.lru_cache(maxsize=None)
 def get_query_vec(query):
     query_tagf = np.zeros((1, len(unique_tags)))
     for wrd in query.split():
@@ -89,22 +91,6 @@ def get_query_vec(query):
             i = tag_to_index[wrd]
             query_tagf[0, i] += 1
     return normalize(query_tagf @ words_compressed)
-
-
-def closest_songs_to_query(query, k=5):
-    query_vec = get_query_vec(query)
-    sims = normalize(query_vec).dot(docs_compressed_normed.T)[0]
-    asort = np.argsort(-sims)[:k+1]
-    return [{'title': big_df['title'].iloc[i],
-             'artist':big_df['artist'].iloc[i],
-             'year':big_df['year'].iloc[i],
-             'views':big_df['views'].iloc[i],
-             'sim':sims[i],
-             'score':sims[i]} for i in asort[0:]]
-
-
-def test():
-    print('hello')
 
 
 def accumulate_dot_scores(query_word_counts, inv_idx, idf):
@@ -127,56 +113,86 @@ def accumulate_dot_scores(query_word_counts, inv_idx, idf):
 
 
 def get_city_query_and_scores(city):
-    q_dict = Counter(wiki_texts[city])
-    q_norm = 0
-    for wrd in q_dict:
-        idf_i = 0
-        if wrd in idf:
-            idf_i = idf[wrd]
-        q_norm += (idf_i * q_dict[wrd]) ** 2
-    q_norm = np.sqrt(q_norm)
-    dot_scores = accumulate_dot_scores(q_dict, song_inv_idx, idf)
-    return q_norm, dot_scores
+    # q_dict =
+    return Counter(wiki_texts[city])
+    # q_norm = 0
+    # for wrd in q_dict:
+    #     idf_i = 0
+    #     if wrd in idf:
+    #         idf_i = idf[wrd]
+    #     q_norm += (idf_i * q_dict[wrd]) ** 2
+    # q_norm = np.sqrt(q_norm)
+    # dot_scores = accumulate_dot_scores(q_dict, song_inv_idx, idf)
+    # return q_norm, dot_scores
 
 
-def top_songs_query(city, query="sad energetic"):
+@functools.lru_cache(maxsize=None)
+def top_songs_query(city, query):
+    """
+    city name to query on
+
+    query is "happy excited" for example
+    """
     print("\nSTART\n")
     best = []
     returned = []
     query_vec = get_query_vec(query)
-    q_norm, dot_scores = get_city_query_and_scores(city)
+    # q_norm, dot_scores = get_city_query_and_scores(city)
+    # q_dict = get_city_query_and_scores(city)
+    print(wiki_tfidf.shape)
+    print(song_tfidf.shape)
+    city_vec = wiki_tfidf[loc_to_idx[city], :]
+    print("city_vec, ", city_vec.shape)
+    # np.dot(city_vec @ song_tfidf).sum(axis=1)
+    lyr_sym = song_tfidf @ city_vec.T
+    print("lyr sim", lyr_sym.shape)
+    # (query_vec @ docs_compressed_normed).sum(axis=1)
+    emot_sym = (docs_compressed_normed@query_vec.T).squeeze()
+    print("emot_sym", emot_sym.shape)
 
-    for i, song in enumerate(song_to_idx.keys()):
-        num = 0
-        if i in dot_scores:
-            num = dot_scores[i]
-        sim = 0
-        if norms[i] != 0:
-            sim = num / (q_norm*norms[i])
+    alpha = .7
+    beta = .3
 
-        # if sim == 1.0:
-        #     sim = 0
+    score = alpha * lyr_sym + beta * emot_sym
+    print("score", score.shape)
+    best_songs = np.argsort(-score)[:10]
+    for i, ind in enumerate(best_songs):
+        song = idx_to_song[ind]
+        print(song)
+        pop = big_df['norm_views'].iloc[ind]
+        best.append((song, lyr_sym[ind], pop, emot_sym[ind], score[ind]))
+    print('here')
+    # for i, song in enumerate(song_to_idx.keys()):
+    #     num = 0
+    #     if i in dot_scores:
+    #         num = dot_scores[i]
+    #     sim = 0
+    #     if norms[i] != 0:
+    #         sim = num / (q_norm*norms[i])
 
-        pop = big_df['norm_views'].iloc[song_to_idx[song]]
+    #     # if sim == 1.0:
+    #     #     sim = 0
 
-        song_emot_vec = docs_compressed_normed[song_to_idx[song], :]
-        emot_score = np.exp(query_vec @ song_emot_vec)/np.e
-        # score = (sim ** 2) + (pop / 5) + ((emot_score) / 10)
-        score = (sim + 1) * (pop + 1) * (emot_score + 1) / 6
+    #     pop = big_df['norm_views'].iloc[song_to_idx[song]]
 
-        best.append((song, sim, pop, emot_score, score))
+    #     song_emot_vec = docs_compressed_normed[song_to_idx[song], :]
+    #     emot_score = np.exp(query_vec @ song_emot_vec)/np.e
+    #     # score = (sim ** 2) + (pop / 5) + ((emot_score) / 10)
+    #     score = (sim + 1) * (pop + 1) * (emot_score + 1) / 6
+
+    #     best.append((song, sim, pop, emot_score, score))
     print("\n2\n")
-    srtd = sorted(best, key=lambda x: x[-1], reverse=True)
-    for t in srtd[:10]:
+    # srtd = sorted(best, key=lambda x: x[1], reverse=True)
+    for t in best:  # srtd[:10]:
         retrieved = big_df.iloc[song_to_idx[t[0]]]
         result = {'title': retrieved['title'],
                   'artist': retrieved['artist'],
                   'year': int(retrieved['year']),
                   'views': int(retrieved['views']),
-                  'sim': float(t[1]),
+                  'sim':   float(t[1]),
                   'pop': float(t[2]),
-                  'emot': float(t[3][0]),
-                  'score': float(t[-1][0]),
+                  'emot': float(t[3]),
+                  'score': float(t[-1]),
                   'id': int(song_to_idx[retrieved['title']])}
         prod = song_tfidf[song_to_idx[retrieved['title']]] * \
             wiki_tfidf[loc_to_idx[city]]
