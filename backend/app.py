@@ -11,7 +11,7 @@ from return_songs import find_nonzero_indices
 import plotly.express as px
 import pandas as pd
 import numpy as np
-import kaleido 
+import kaleido
 
 
 # # https://spotipy.readthedocs.io/en/2.22.1/
@@ -81,7 +81,7 @@ def my_link():
     current_url = request.url
 
     urlQuery = current_url[current_url.index('?') + 1:]
-    urlQuerySplit = urlQuery.split('&');
+    urlQuerySplit = urlQuery.split('&')
 
     cityRaw = urlQuerySplit[0]
     moodsRaw = urlQuerySplit[1]
@@ -102,7 +102,8 @@ def my_link():
         year = str(item['year'])
 
         # spotify query construction
-        spq = "track\:" + item['title'] + "%20artist\:" + item['artist'] + "%20year\:" + year
+        spq = "track\:" + item['title'] + "%20artist\:" + \
+            item['artist'] + "%20year\:" + year
 
         # spotify query result
         results = sp.search(spq, limit=1, type='track')
@@ -122,8 +123,7 @@ def my_link():
                                    'sim': round(item['sim'] * 100.0, 2),
                                    'pop': round(item['pop'] * 100.0, 2),
                                    'emot': round(item['emot'] * 100.0, 2),
-                                   'score': round(item['score'] * 100.0, 2) }
-        
+                                   'score': round(item['score'] * 100.0, 2)}
 
         if (len(track) > 0 and ((item['title'].lower() in track[0]['name'].lower()) or (track[0]['artists'][0]['name'].lower() in item['artist'].lower()))):
             track = track[0]
@@ -139,7 +139,7 @@ def my_link():
 
             content_integrated[key]['album_art'] = track['album']['images'][1]['url']
             content_integrated[key]['album_link'] = track['album']['uri']
-            
+
             content_integrated[key]['preview_url'] = track['preview_url']
 
             content_integrated[key]['id'] = track['id']
@@ -152,13 +152,14 @@ def my_link():
             content_integrated[key]['song'] = item['title']
             content_integrated[key]['year'] = year
             content_integrated[key]['id'] = item['id']
-        
+
         if not os.path.exists("static/viz"):
             os.mkdir("static/viz")
 
         temp_df = pd.DataFrame.from_dict(item)
         temp_df['score_in_city'] = temp_df['score_in_city']
-        temp_df = pd.melt(temp_df, id_vars=['best_words'], value_vars=['score_in_city', 'score_in_song'])
+        temp_df = pd.melt(temp_df, id_vars=['best_words'], value_vars=[
+                          'score_in_city', 'score_in_song'])
 
         fig = px.line_polar(
             data_frame=temp_df,
@@ -179,14 +180,17 @@ def my_link():
             orientation="h",
             y=-0.2,
             yanchor="bottom",
-            bgcolor = "rgba(0,0,0,0)",
+            bgcolor="rgba(0,0,0,0)",
         ))
 
-        temp_filename = "static/viz/" + cityClean.replace(' ', '') + str(content_integrated[key]['id']) + ".svg"
+        temp_filename = "static/viz/" + \
+            cityClean.replace(' ', '') + \
+            str(content_integrated[key]['id']) + ".svg"
 
         fig.write_image(temp_filename)
 
     return render_template('results.html', data=content_integrated, city=cityClean, cityStripped=cityClean.replace(' ', ''), moods=moodsClean.replace(' ', ", "))
+
 
 @app.route('/test')
 def svg_test():
@@ -210,7 +214,8 @@ def svg_test():
         temp_df = pd.DataFrame.from_dict(item)
         temp_df['score_in_city'] = np.linalg.norm(temp_df['score_in_city'])
         temp_df['score_in_song'] = np.linalg.norm(temp_df['score_in_song'])
-        temp_df = pd.melt(temp_df, id_vars=['best_words'], value_vars=['score_in_city', 'score_in_song'])
+        temp_df = pd.melt(temp_df, id_vars=['best_words'], value_vars=[
+                          'score_in_city', 'score_in_song'])
 
         # temp_df['value'] = np.log(temp_df['value'] + 1.)
 
@@ -233,14 +238,15 @@ def svg_test():
             orientation="h",
             y=-0.2,
             yanchor="bottom",
-            bgcolor = "rgba(0,0,0,0)",
+            bgcolor="rgba(0,0,0,0)",
         ))
 
-        temp_filename = "static/viz/" + cityClean.replace(' ', '') + str(item['id']) + ".svg"
+        temp_filename = "static/viz/" + \
+            cityClean.replace(' ', '') + str(item['id']) + ".svg"
 
         fig.write_image(temp_filename)
 
-
     return render_template('test.html', data=content, city=cityClean.replace(' ', ''), moods=moodsClean.replace(' ', ","))
 
-#app.run(debug=False)
+
+app.run(debug=False)

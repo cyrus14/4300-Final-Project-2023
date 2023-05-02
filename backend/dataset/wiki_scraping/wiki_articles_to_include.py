@@ -1,3 +1,3 @@
-titles = ['New York City', 'Budapest', 'Ithaca', 'Miami', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 'Philadelphia', 'San Antonio', 'San Diego', 'Dallas', 'San Jose', 'Austin', 'San Francisco', 'Seattle', 'Denver', 'Nashville', 'Washington', 'Oklahoma City', 'Boston',
+titles = ['New York City', 'Budapest', 'Ithaca, New York', 'Miami', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 'Philadelphia', 'San Antonio', 'San Diego', 'Dallas', 'San Jose', 'Austin', 'San Francisco', 'Seattle', 'Denver', 'Nashville', 'Washington', 'Oklahoma City', 'Boston',
           'Las Vegas', 'Memphis', 'Detroit', 'Baltimore', 'Tel Aviv', 'Jerusalem', 'Seoul', 'New Orleans', 'Paris', 'Tokyo', 'Delhi', 'Shanghai', 'Mexico City', 'Cairo', 'Mumbai', 'Beijing', 'Osaka', 'Buenos Aires', 'Istanbul', 'Guangzhou', 'Bangkok', 'London', 'Hong Kong', 'Madrid', 'Toronto', 'Atlanta', 'Washington']
 # titles = ['New York City', 'Budapest', 'Tokyo',  'Mumbai',  'London', 'Toronto']
