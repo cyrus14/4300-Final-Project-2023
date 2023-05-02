@@ -381,6 +381,7 @@ ul li {
 
 .card-left-flex {
     min-width: 400px;
+    padding: 0.5em;
 }
 
 .card-right-flex {
@@ -413,7 +414,8 @@ ul li {
 
 .card-row {
     width: 50vw;
-    height: 22vh;
+    height: auto;
+    min-height: 22vh;
     margin: 0.5em;
     font-family: 'DM Sans', sans-serif;
     color: #262B40;
@@ -501,15 +503,13 @@ ul li {
 	position: absolute;
 	left: 50%;
 	transform: translate(-50%, 5%);
-	border-radius: 3px;
+	border-radius: 10px;
 /* 	border: 1px solid #E0E0E0; */
-	box-shadow: 0 0px 20px 0 rgba(0,0,0,0.1);
-	color: #37393D;
 	font-size: 12px;
 	line-height: 18px;
 	z-index: 99;
     margin-left: 35%;
-    margin-top: -4%
+    margin-top: -5%;
 }
 
 /* The pointer of the tooltip */
