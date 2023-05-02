@@ -341,4 +341,4 @@ def svg_test():
     return render_template('test.html', data=content, city=cityClean.replace(' ', ''), moods=moodsClean.replace(' ', ","))
 '''
 
-app.run(debug=True)
+#app.run(debug=True)
