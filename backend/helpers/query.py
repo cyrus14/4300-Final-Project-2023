@@ -93,39 +93,6 @@ def get_query_vec(query):
     return normalize(query_tagf @ words_compressed)
 
 
-def accumulate_dot_scores(query_word_counts, inv_idx, idf):
-    doc_scores = {}
-    for wrd in query_word_counts:
-        idf_i = 0
-        if wrd in idf:
-            idf_i = idf[wrd]
-        qi = query_word_counts[wrd] * idf_i
-        if wrd in idf:
-            for tup in inv_idx[wrd]:
-                docid = tup[0]
-                dij = tup[1] * idf[wrd]
-                this_dot = dij * qi
-                if docid in doc_scores:
-                    doc_scores[docid] += this_dot
-                else:
-                    doc_scores[docid] = this_dot
-    return doc_scores
-
-
-def get_city_query_and_scores(city):
-    # q_dict =
-    return Counter(wiki_texts[city])
-    # q_norm = 0
-    # for wrd in q_dict:
-    #     idf_i = 0
-    #     if wrd in idf:
-    #         idf_i = idf[wrd]
-    #     q_norm += (idf_i * q_dict[wrd]) ** 2
-    # q_norm = np.sqrt(q_norm)
-    # dot_scores = accumulate_dot_scores(q_dict, song_inv_idx, idf)
-    # return q_norm, dot_scores
-
-
 @functools.lru_cache(maxsize=None)
 def top_songs_query(city, query):
     """
@@ -137,8 +104,6 @@ def top_songs_query(city, query):
     best = []
     returned = []
     query_vec = get_query_vec(query)
-    # q_norm, dot_scores = get_city_query_and_scores(city)
-    # q_dict = get_city_query_and_scores(city)
     print(wiki_tfidf.shape)
     print(song_tfidf.shape)
     city_vec = wiki_tfidf[loc_to_idx[city], :]
@@ -167,28 +132,7 @@ def top_songs_query(city, query):
         pop = big_df['norm_views'].iloc[ind]
         best.append((song, lyr_sym[ind], pop, emot_sym[ind], score[ind]))
     print('here')
-    # for i, song in enumerate(song_to_idx.keys()):
-    #     num = 0
-    #     if i in dot_scores:
-    #         num = dot_scores[i]
-    #     sim = 0
-    #     if norms[i] != 0:
-    #         sim = num / (q_norm*norms[i])
-
-    #     # if sim == 1.0:
-    #     #     sim = 0
-
-    #     pop = big_df['norm_views'].iloc[song_to_idx[song]]
-
-    #     song_emot_vec = docs_compressed_normed[song_to_idx[song], :]
-    #     emot_score = np.exp(query_vec @ song_emot_vec)/np.e
-    #     # score = (sim ** 2) + (pop / 5) + ((emot_score) / 10)
-    #     score = (sim + 1) * (pop + 1) * (emot_score + 1) / 6
-
-    #     best.append((song, sim, pop, emot_score, score))
-    print("\n2\n")
-    # srtd = sorted(best, key=lambda x: x[1], reverse=True)
-    for t in best:  # srtd[:10]:
+    for t in best:
         retrieved = big_df.iloc[song_to_idx[t[0]]]
         result = {'title': retrieved['title'],
                   'artist': retrieved['artist'],
@@ -217,6 +161,3 @@ def top_songs_query(city, query):
         returned.append(result)
     print("END QUERY")
     return returned
-
-# print(top_songs_query("New York City"))
-# print(list(unique_tags))
