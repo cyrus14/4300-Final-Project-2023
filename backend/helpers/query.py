@@ -1,22 +1,18 @@
 import pickle
 import pandas as pd
 import numpy as np
-import json
-import math
 import os
 import zipfile
 import ast
 from scipy.sparse.linalg import svds
 from sklearn.preprocessing import normalize
-import random
 from collections import Counter
 import functools
-
-# PICKLE :)
 
 root_path = os.path.abspath(os.curdir)
 os.environ['ROOT_PATH'] = root_path
 
+# PICKLE :)
 
 # unpickle wiki_tf_idf (vec2)
 with open(os.environ['ROOT_PATH'] + '/wiki_tf_idf.pkl', 'rb') as pickle_file:
@@ -72,10 +68,8 @@ with zipfile.ZipFile(os.environ['ROOT_PATH'] + '/dataset/big_df_edited.csv.zip',
     zip_ref.extractall(os.environ['ROOT_PATH'] + '/dataset/')
 
 big_df = pd.read_csv(os.environ['ROOT_PATH'] + '/dataset/big_df_edited.csv')
-
 big_df['emotions'] = big_df['emotions'].apply(ast.literal_eval)
 big_df['emotions'] = big_df['emotions'].apply(lambda x: [tup[0] for tup in x])
-
 
 @functools.lru_cache(maxsize=None)
 def get_query_vec(query):
