@@ -535,12 +535,16 @@ ul li {
 .graph{
     height: 400px;
     width: 400px;
+    position: absolute;
+    left: -10px !important;
     border-radius: 15px;
 }
 
 .graph :after{
     background-color: transparent;
-    width: 50px;
+    width: 40px;
+    position: absolute;
+    left: -10px !important;
     height: auto;
 }
 
@@ -645,5 +649,3 @@ ul li {
 .overlay:hover {
     opacity: 0.8;
 }
-
-

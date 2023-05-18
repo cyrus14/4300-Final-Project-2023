@@ -198,4 +198,8 @@ def my_link():
     # return results page
     return render_template('results.html', data=content_integrated, city=cityClean, cityStripped=cityClean.replace(' ', ''), moods=moodsClean.replace(' ', ", "))
 
+<<<<<<< HEAD
 # app.run(debug=True)
+=======
+app.run(debug=True)
+>>>>>>> e0f78ba2e3d2e29b4e58290029dbf7accf4bd314
